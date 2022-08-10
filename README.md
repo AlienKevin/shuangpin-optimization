@@ -13,7 +13,7 @@ We only included the test and validation data in this repo due to GitHub's file 
 You can download the train data `web_text_zh_train.json` from [brightmart/nlp_chinese_corpus](https://github.com/brightmart/nlp_chinese_corpus#4%E7%A4%BE%E5%8C%BA%E9%97%AE%E7%AD%94json%E7%89%88webtext2019zh-%E5%A4%A7%E8%A7%84%E6%A8%A1%E9%AB%98%E8%B4%A8%E9%87%8F%E6%95%B0%E6%8D%AE%E9%9B%86).
 
 # Results
-The following results are computed from `web_text_zh_train.json` with 4.12 million Q&As.
+The following results are computed from `web_text_zh_train.json` with 4.12 million Q&As. A notable observation is that the frequency results already stabilizes at around 68,000 Q&As, ie the testing or validation sets. The result of the testing set A has identical frequency percentage for all initials and finals. The result of the validation set is also identical except that the percentage of the final eng is 1% higher in validation and the extremely rare final m is missing. Since the python program is not parallelized yet, the execution speed is rather slow. On a 2021 MacBook Pro with M1 Max (64GB RAM), the testing and validation set takes about 10 minutes while the training set takes more than 3 hours. If you want to reproduce the result below, we recommend running `process.py` on `web_text_zh_testa.json` (this is the default).
 
 ## Frequencies of initials
 Number of initials in the corpus: 940421490
