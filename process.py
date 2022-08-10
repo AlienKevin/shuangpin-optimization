@@ -8,7 +8,7 @@ initial_regex = re.compile(
 initial_freq = dict()
 final_freq = dict()
 
-with open('web_text_zh_small.json') as f:
+with open('web_text_zh_testa.json') as f:
     for line in f:
         data = json.loads(line)
         pinyins = lazy_pinyin(data['title'], errors='ignore') + \
