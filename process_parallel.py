@@ -156,13 +156,19 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Compute the frequencies of Pinyin initials and finals.')
     parser.add_argument('source_type', type=str,
-                        help='Type of source to process. Can be one of "news" or "zhihu"')
+                        help='Type of source to process. Can be one of "news", "zhihu", or "baike".')
     parser.add_argument('-s', '--set', type=str,
-                        help='Which set of source to use. For news, can be one of "valid_small" (the first 17367 lines of "valid"), "valid" or "train", defaults to "valid_small". For zhihu, can be one of "small", "testa", "valid", or "train", defaults to "testa".')
+                        help='Which set of source to use. For news, can be one of "valid_small" (the first 17367 lines of "valid"), "valid" or "train", defaults to "valid_small". For zhihu, can be one of "small", "testa", "valid", or "train", defaults to "testa". For baike, can be one of "valid" or "train", defaults to "valid".')
     args = parser.parse_args()
     source_type = args.source_type
-    source_set = args.set if args.set else (
-        'valid_small' if source_type == 'news' else 'testa')
+    source_set = args.set
+    if args.set == None:
+        if source_type == 'news':
+            source_set = 'valid_small'
+        elif source_type == 'zhihu':
+            source_set = 'testa'
+        elif source_type == 'baike':
+            source_set = 'valid'
     file_name = ""
     fields = []
     if source_type == 'zhihu':
@@ -171,6 +177,9 @@ if __name__ == '__main__':
     elif source_type == 'news':
         file_name = './data/news/news2016zh_{}.json'.format(source_set)
         fields = ['title', 'content']
+    elif source_type == 'baike':
+        file_name = './data/baike/baike_qa_{}.json'.format(source_set)
+        fields = ['title', 'answer']
     print("Processing the {} set of {} with fields {}".format(
         source_set, source_type, ", ".join(fields)))
     (initial_freq, final_freq) = measure(
