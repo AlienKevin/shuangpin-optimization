@@ -5,17 +5,18 @@ import multiprocessing as mp
 import os
 import sys
 import time
+import argparse
 
 initial_regex = re.compile(
     "(ch|zh|sh|r|c|b|d|g|f|h|k|j|m|l|n|q|p|s|t|w|y|x|z)")
 
 
-def process_line(line):
+def process_line(line, fields):
     initial_freq = dict()
     final_freq = dict()
     data = json.loads(line)
     pinyins = lazy_pinyin(
-        data['title'] + ' ' + data['desc'] + ' ' + data['content'], errors='ignore')
+        " ".join(map(lambda field: data[field], fields)), errors='ignore')
     for pinyin in pinyins:
         match_result = initial_regex.match(pinyin)
         if match_result:
@@ -30,7 +31,7 @@ def process_line(line):
 
 
 # Source: https://nurdabolatov.com/parallel-processing-large-file-in-python
-def parallel_read(file_name):
+def parallel_read(file_name, fields):
     # Maximum number of processes we can run at a time
     cpu_count = mp.cpu_count()
     print("CPU count: {}".format(cpu_count))
@@ -81,7 +82,7 @@ def parallel_read(file_name):
                 chunk_end = get_next_line_position(chunk_end)
 
             # Save `process_chunk` arguments
-            args = (file_name, chunk_start, chunk_end)
+            args = (file_name, fields, chunk_start, chunk_end)
             print("Identified chunk {}-{}".format(chunk_start, chunk_end))
             chunk_args.append(args)
 
@@ -100,7 +101,7 @@ def parallel_read(file_name):
 
 
 # Source: https://nurdabolatov.com/parallel-processing-large-file-in-python
-def process_chunk(file_name, chunk_start, chunk_end):
+def process_chunk(file_name, fields, chunk_start, chunk_end):
     print("Processing chunk {}-{}".format(chunk_start, chunk_end))
     chunk_result = (dict(), dict())
     with open(file_name, 'r') as f:
@@ -112,7 +113,8 @@ def process_chunk(file_name, chunk_start, chunk_end):
             chunk_start += utf8len(line)
             if chunk_start > chunk_end:
                 break
-            chunk_result = union_freqs(chunk_result, process_line(line))
+            chunk_result = union_freqs(
+                chunk_result, process_line(line, fields))
     return chunk_result
 
 
@@ -151,7 +153,27 @@ def measure(func, *args):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Compute the frequencies of Pinyin initials and finals.')
+    parser.add_argument('source_type', type=str,
+                        help='Type of source to process. Can be one of "news" or "zhihu"')
+    parser.add_argument('-s', '--set', type=str,
+                        help='Which set of source to use. For news, can be one of "valid_small" (the first 17367 lines of "valid"), "valid" or "train", defaults to "valid_small". For zhihu, can be one of "small", "testa", "valid", or "train", defaults to "testa".')
+    args = parser.parse_args()
+    source_type = args.source_type
+    source_set = args.set if args.set else (
+        'valid_small' if source_type == 'news' else 'testa')
+    file_name = ""
+    fields = []
+    if source_type == 'zhihu':
+        file_name = './data/zhihu/web_text_zh_{}.json'.format(source_set)
+        fields = ['title', 'desc', 'content']
+    elif source_type == 'news':
+        file_name = './data/news/news2016zh_{}.json'.format(source_set)
+        fields = ['title', 'content']
+    print("Processing the {} set of {} with fields {}".format(
+        source_set, source_type, ", ".join(fields)))
     (initial_freq, final_freq) = measure(
-        parallel_read, "web_text_zh_valid.json")
+        parallel_read, file_name, fields)
     print_freq("initial", initial_freq)
     print_freq("final", final_freq)
