@@ -13,33 +13,14 @@ from typing import TypeAlias
 initial_regex = re.compile("(ch|zh|sh|r|c|b|d|g|f|h|k|j|m|l|n|q|p|s|t|w|y|x|z)")
 
 
-@dataclass
-class Initial:
-    name: str
-
-
-@dataclass
-class Final:
-    name: str
-
-
-Component = Initial | Final
-
-
-FreqDict: TypeAlias = dict[str, int]
-NeighborFreqDict: TypeAlias = dict[str, FreqDict]
+SingleFreqs: TypeAlias = dict[str, int]
+PairFreqs: TypeAlias = dict[(str, str), int]
 
 
 @dataclass
 class Freqs:
-    initial_freq: FreqDict = field(default_factory=lambda: defaultdict(int))
-    final_freq: FreqDict = field(default_factory=lambda: defaultdict(int))
-    initial_neighbor_freq: NeighborFreqDict = field(
-        default_factory=lambda: defaultdict(lambda: defaultdict(int))
-    )
-    final_neighbor_freq: NeighborFreqDict = field(
-        default_factory=lambda: defaultdict(lambda: defaultdict(int))
-    )
+    single_freqs: SingleFreqs = field(default_factory=lambda: defaultdict(int))
+    pair_freqs: PairFreqs = field(default_factory=lambda: defaultdict(int))
 
 
 def process_line(line, fields):
@@ -48,43 +29,26 @@ def process_line(line, fields):
     pinyins = lazy_pinyin(
         " ".join(map(lambda field: data[field], fields)), errors="ignore"
     )
-    initial_final_seq = []
+    seq = []
     for pinyin in pinyins:
         match_result = initial_regex.match(pinyin)
         if match_result:
             initial = match_result.groups()[0]
             final = pinyin[len(initial) :]
-            freqs.initial_freq[initial] += 1
-            initial_final_seq.append(Initial(initial))
+            freqs.single_freqs[initial] += 1
+            seq.append(initial)
             if len(final) > 0:
-                freqs.final_freq[final] += 1
-                initial_final_seq.append(Final(final))
+                freqs.single_freqs[final] += 1
+                seq.append(final)
         else:
             final = pinyin
-            freqs.final_freq[final] += 1
-            initial_final_seq.append(Final(final))
+            freqs.single_freqs[final] += 1
+            seq.append(final)
 
-    for i, component in enumerate(initial_final_seq):
-        prev = None
-        next = None
-        if i > 0:
-            prev = initial_final_seq[i - 1]
-        if i < len(initial_final_seq) - 1:
-            next = initial_final_seq[i + 1]
-        match component:
-            case Initial(initial):
-                if prev is not None:
-                    freqs.initial_neighbor_freq[initial][prev.name] += 1
-                if next is not None:
-                    freqs.initial_neighbor_freq[initial][next.name] += 1
-            case Final(final):
-                if prev is not None:
-                    freqs.final_neighbor_freq[final][prev.name] += 1
-                if next is not None:
-                    freqs.final_neighbor_freq[final][next.name] += 1
-                    # final_neighbor_freq[final][next.name] = (
-                    #     final_neighbor_freq.get(final, {}).get(next.name, 0) + 1
-                    # )
+    for i, component in enumerate(seq):
+        if i < len(seq) - 1:
+            next = seq[i + 1]
+            freqs.pair_freqs[(component, next)] += 1
 
     return freqs
 
@@ -184,18 +148,9 @@ def utf8len(s):
 
 def union_freqs(freq1: Freqs, freq2: Freqs):
     return Freqs(
-        union_add(freq1.initial_freq, freq2.initial_freq),
-        union_add(freq1.final_freq, freq2.final_freq),
-        union_add_nested(freq1.initial_neighbor_freq, freq2.initial_neighbor_freq),
-        union_add_nested(freq1.final_neighbor_freq, freq2.final_neighbor_freq),
+        union_add(freq1.single_freqs, freq2.single_freqs),
+        union_add(freq1.pair_freqs, freq2.pair_freqs),
     )
-
-
-def union_add_nested(dict1: dict, dict2: dict):
-    return {
-        x: union_add(dict1.get(x, {}), dict2.get(x, {}))
-        for x in set(dict1).union(dict2)
-    }
 
 
 # Source: https://stackoverflow.com/a/11011911/6798201
@@ -203,38 +158,38 @@ def union_add(dict1: dict, dict2: dict):
     return {x: dict1.get(x, 0) + dict2.get(x, 0) for x in set(dict1).union(dict2)}
 
 
-def print_freqs(freqs: Freqs):
-    print_freq("initial", freqs.initial_freq, freqs.initial_neighbor_freq)
-    print_freq("final", freqs.final_freq, freqs.final_neighbor_freq)
+def serialize_freqs(freqs: Freqs):
+    serialize_single_freqs(freqs.single_freqs)
+    serialize_pair_freqs(freqs.pair_freqs)
 
 
-def print_freq(label: str, freq: FreqDict, neighbor_freq: NeighborFreqDict):
-    total_count = sum(freq.values())
-    print("# of {}: {}".format(label, total_count))
-    print(label + "\t" + "%\t" + "#")
-    for (key, count) in sorted(freq.items(), key=lambda x: x[1], reverse=True):
-        neighbor_counts = sum(neighbor_freq[key].values())
-        print(
-            key
-            + "\t"
-            + "{:.0f}".format(count / total_count * 100)
-            + "\t"
-            + str(count)
-            + "\t"
-            + ", ".join(
-                map(
-                    lambda item: item[0]
-                    + ":"
-                    + "{:.0f}".format(item[1] / neighbor_counts * 100),
-                    sorted(
-                        neighbor_freq[key].items(),
-                        key=lambda item: item[1],
-                        reverse=True,
-                    )[:5],
-                )
-            )
-        )
+def serialize_single_freqs(freqs: SingleFreqs):
+    total_count = sum(freqs.values())
+    outputs = dict()
+    for (key, count) in sorted(freqs.items(), key=lambda x: x[1], reverse=True):
+        percent = count / total_count * 100
+        if percent > 0.0001:
+            print(key + "\t" + "{:.0f}".format(percent))
+            outputs[key] = percent
     print()
+    with open("single_freqs.json", "w+") as outfile:
+        json.dump(outputs, outfile)
+
+
+def serialize_pair_freqs(freqs: PairFreqs):
+    total_count = sum(freqs.values())
+    outputs = dict()
+    for (key, count) in sorted(freqs.items(), key=lambda x: x[1], reverse=True):
+        percent = count / total_count * 100
+        if percent > 0.0001:
+            print(
+                key[0] + "+" + key[1] + "\t" + "{:.4f}".format(percent),
+                end="\t",
+            )
+            outputs[key[0] + "+" + key[1]] = percent
+    print()
+    with open("pair_freqs.json", "w+") as outfile:
+        json.dump(outputs, outfile)
 
 
 def measure(func, *args):
@@ -291,4 +246,4 @@ if __name__ == "__main__":
         )
     )
     freqs = measure(parallel_read, file_name, fields)
-    print_freqs(freqs)
+    serialize_freqs(freqs)
