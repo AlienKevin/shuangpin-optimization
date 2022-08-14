@@ -1,5 +1,6 @@
 import json
 from enum import Enum, IntEnum
+from dataclasses import dataclass
 
 # first: 0 = left hand, 1 = right hand
 # second: 1 = index finger, 2 = index finger, 3 = middle finger, 4 = ring finger, 5 = little finger
@@ -79,68 +80,6 @@ pair_freqs: dict[tuple[str, str], float] = {
     tuple(k.split("+")): v for k, v in json.load(open("pair_freqs.json", "r")).items()
 }
 
-### Xiaohe Shuangpin (小鹤双拼) configurations
-
-# Map variant finals to standard finals
-# standards appear on the top of the key in the keyboard diagram
-# variants appear below the standards
-xiaohe_variant_to_standard_finals = {
-    "ve": "ue",
-    "o": "uo",
-    "iong": "ong",
-    "ing": "uai",
-    "iang": "uang",
-    "ia": "ua",
-    "v": "ui",
-}
-
-xiaohe_layout: dict[str, str] = {
-    "iu": "q",
-    "ei": "w",
-    "uan": "r",
-    "ue": "t",
-    "un": "y",
-    "sh": "u",
-    "ch": "i",
-    "uo": "o",
-    "ie": "p",
-    "ong": "s",
-    "ai": "d",
-    "en": "f",
-    "eng": "g",
-    "ang": "h",
-    "an": "j",
-    "uai": "k",
-    "uang": "l",
-    "ou": "z",
-    "ua": "x",
-    "ao": "c",
-    "ui": "v",
-    "zh": "v",
-    "in": "b",
-    "iao": "n",
-    "ian": "m",
-}
-
-xiaohe_zero_consonant_layout: dict[str, tuple[str, str]] = {
-    "a": ("a", "a"),
-    "e": ("e", "e"),
-    "o": ("o", "o"),
-    "ai": ("a", "i"),
-    "ei": ("e", "i"),
-    "ou": ("o", "u"),
-    "an": ("a", "n"),
-    "en": ("e", "n"),
-    "ang": ("a", "h"),
-    "eng": ("e", "g"),
-    "ao": ("a", "o"),
-    "er": ("e", "r"),
-}
-
-
-def xiaohe_get_standard_component(final: str) -> str:
-    return xiaohe_variant_to_standard_finals.get(final, final)
-
 
 class Choice(Enum):
     LEFT = True
@@ -195,88 +134,6 @@ def is_preferred_hit_direction(i: Key, j: Key) -> bool:
     return get_finger(i) >= get_finger(j)
 
 
-def xiaohe_get_key(i: str, zero_consonant_choice: Choice) -> str:
-    if is_zero_consonant_final(i):
-        final = strip_zero_consonant_final_tag(i)
-        return xiaohe_zero_consonant_layout[final][
-            0 if zero_consonant_choice == Choice.LEFT else 1
-        ]
-    standard_component = xiaohe_get_standard_component(i)
-    return xiaohe_layout.get(standard_component, standard_component)
-
-
-xiaohe_single_key_freqs: dict[Key, float] = single_freqs.copy()
-xiaohe_pair_key_freqs: dict[tuple[Key, Key], float] = pair_freqs.copy()
-
-for standard, variant in xiaohe_variant_to_standard_finals.items():
-    xiaohe_single_key_freqs[standard] += xiaohe_single_key_freqs[variant]
-    xiaohe_single_key_freqs.pop(variant)
-
-for pair, freq in xiaohe_pair_key_freqs.copy().items():
-    standard_pair = (
-        xiaohe_get_standard_component(pair[0]),
-        xiaohe_get_standard_component(pair[1]),
-    )
-    if pair != standard_pair:
-        variant_freq = xiaohe_pair_key_freqs.pop(pair)
-        xiaohe_pair_key_freqs[standard_pair] = (
-            xiaohe_pair_key_freqs.get(standard_pair, 0) + variant_freq
-        )
-
-
-def xiaohe_workload_distribution() -> float:
-    key_freqs: dict[Key, float] = dict()
-    for i, freq in xiaohe_single_key_freqs.items():
-        if is_zero_consonant_final(i):
-            final = strip_zero_consonant_final_tag(i)
-            (first_key, second_key) = xiaohe_zero_consonant_layout[final]
-            key_freqs[first_key] = key_freqs.get(first_key, 0) + freq
-            key_freqs[second_key] = key_freqs.get(second_key, 0) + freq
-        else:
-            # The zero consonant choice doesn't matter because we handled it above
-            key = xiaohe_get_key(i, Choice.LEFT)
-            key_freqs[key] = key_freqs.get(key, 0) + freq
-    I1 = 0.0
-    for key, freq in key_freqs.items():
-        key_location = qwerty_layout[key]
-        I1 += ((freq - ideal_workload_distribution[key_location]) / 100) ** 2
-    return I1
-
-
-def xiaohe_hand_alternation() -> float:
-    I2 = 0.0
-    for (i, j) in xiaohe_pair_key_freqs:
-        i_key = xiaohe_get_key(i, Choice.RIGHT)
-        j_key = xiaohe_get_key(j, Choice.LEFT)
-        if is_same_hand(i_key, j_key):
-            # Gives penalty if the two keys are on the same hand
-            I2 += xiaohe_pair_key_freqs[(i, j)]
-    # add zero-consonant hand alternations
-    for final, key_pair in xiaohe_zero_consonant_layout.items():
-        if is_same_hand(key_pair[0], key_pair[1]):
-            I2 += xiaohe_single_key_freqs.get(final, 0)
-    return I2 / 100
-
-
-def xiaohe_finger_alternation() -> float:
-    I3 = 0.0
-    for (i, j) in xiaohe_pair_key_freqs:
-        i_key = xiaohe_get_key(i, Choice.RIGHT)
-        j_key = xiaohe_get_key(j, Choice.LEFT)
-        if is_same_hand(i_key, j_key) and is_same_finger(i_key, j_key):
-            # Gives penalty if the pair is on the same hand and the same finger
-            I3 += xiaohe_pair_key_freqs[(i, j)] * distance(i_key, j_key)
-    # add zero-consonant finger alternations
-    for final, key_pair in xiaohe_zero_consonant_layout.items():
-        if is_same_hand(key_pair[0], key_pair[1]) and is_same_finger(
-            key_pair[0], key_pair[1]
-        ):
-            I3 += xiaohe_single_key_freqs.get(final, 0) * distance(
-                key_pair[0], key_pair[1]
-            )
-    return I3 / 100
-
-
 penalty_coefficient_for_big_steps: dict[tuple[Finger, Finger], int] = {
     # first finger is index
     (Finger.INDEX, Finger.INDEX): 0,
@@ -305,54 +162,194 @@ def get_big_step_penalty(i: Key, j: Key) -> int:
     return penalty_coefficient_for_big_steps[(get_finger(i), get_finger(j))]
 
 
-def xiaohe_big_steps() -> float:
-    I4 = 0.0
-    for (i, j) in xiaohe_pair_key_freqs:
-        i_key = xiaohe_get_key(i, Choice.RIGHT)
-        j_key = xiaohe_get_key(j, Choice.LEFT)
-        if is_same_hand(i_key, j_key):
-            # Gives penalty if the pair is on the same hand
-            I4 += xiaohe_pair_key_freqs[(i, j)] * get_big_step_penalty(i_key, j_key)
-    # add zero-consonant finger alternations
-    for final, key_pair in xiaohe_zero_consonant_layout.items():
-        if is_same_hand(key_pair[0], key_pair[1]):
-            I4 += xiaohe_single_key_freqs.get(final, 0) * get_big_step_penalty(
-                key_pair[0], key_pair[1]
+@dataclass
+class ShuangpinConfig:
+    layout: dict[str, str]
+    zero_consonant_layout: dict[str, tuple[str, str]]
+    variant_to_standard_finals: dict[str, str]
+
+
+def get_score(
+    config: ShuangpinConfig,
+) -> float:
+    def get_standard_component(final: str) -> str:
+        return config.variant_to_standard_finals.get(final, final)
+
+    def get_key(i: str, zero_consonant_choice: Choice) -> str:
+        if is_zero_consonant_final(i):
+            final = strip_zero_consonant_final_tag(i)
+            return config.zero_consonant_layout[final][
+                0 if zero_consonant_choice == Choice.LEFT else 1
+            ]
+        standard_component = get_standard_component(i)
+        return config.layout.get(standard_component, standard_component)
+
+    single_key_freqs: dict[Key, float] = single_freqs.copy()
+    pair_key_freqs: dict[tuple[Key, Key], float] = pair_freqs.copy()
+
+    for standard, variant in config.variant_to_standard_finals.items():
+        single_key_freqs[standard] += single_key_freqs[variant]
+        single_key_freqs.pop(variant)
+
+    for pair in pair_key_freqs.copy():
+        standard_pair = (
+            get_standard_component(pair[0]),
+            get_standard_component(pair[1]),
+        )
+        if pair != standard_pair:
+            variant_freq = pair_key_freqs.pop(pair)
+            pair_key_freqs[standard_pair] = (
+                pair_key_freqs.get(standard_pair, 0) + variant_freq
             )
-    return I4 / 100
 
+    def workload_distribution() -> float:
+        key_freqs: dict[Key, float] = dict()
+        for i, freq in single_key_freqs.items():
+            if is_zero_consonant_final(i):
+                final = strip_zero_consonant_final_tag(i)
+                (first_key, second_key) = config.zero_consonant_layout[final]
+                key_freqs[first_key] = key_freqs.get(first_key, 0) + freq
+                key_freqs[second_key] = key_freqs.get(second_key, 0) + freq
+            else:
+                # The zero consonant choice doesn't matter because we handled it above
+                key = get_key(i, Choice.LEFT)
+                key_freqs[key] = key_freqs.get(key, 0) + freq
+        I1 = 0.0
+        for key, freq in key_freqs.items():
+            key_location = qwerty_layout[key]
+            I1 += ((freq - ideal_workload_distribution[key_location]) / 100) ** 2
+        return I1
 
-def xiaohe_hit_direction() -> float:
-    I5 = 0.0
-    for (i, j) in xiaohe_pair_key_freqs:
-        i_key = xiaohe_get_key(i, Choice.RIGHT)
-        j_key = xiaohe_get_key(j, Choice.LEFT)
-        if is_same_hand(i_key, j_key) and not is_preferred_hit_direction(i_key, j_key):
-            # Gives penalty if the pair is on the same hand and not in preferred hit direction
-            I5 += xiaohe_pair_key_freqs[(i, j)]
-    # add zero-consonant finger alternations
-    for final, key_pair in xiaohe_zero_consonant_layout.items():
-        if is_same_hand(key_pair[0], key_pair[1]) and not is_preferred_hit_direction(
-            key_pair[0], key_pair[1]
-        ):
-            I5 += xiaohe_single_key_freqs.get(final, 0)
-    return I5 / 100
+    def hand_alternation() -> float:
+        I2 = 0.0
+        for (i, j) in pair_key_freqs:
+            i_key = get_key(i, Choice.RIGHT)
+            j_key = get_key(j, Choice.LEFT)
+            if is_same_hand(i_key, j_key):
+                # Gives penalty if the two keys are on the same hand
+                I2 += pair_key_freqs[(i, j)]
+        # add zero-consonant hand alternations
+        for final, key_pair in config.zero_consonant_layout.items():
+            if is_same_hand(key_pair[0], key_pair[1]):
+                I2 += single_key_freqs.get(final, 0)
+        return I2 / 100
 
+    def finger_alternation() -> float:
+        I3 = 0.0
+        for (i, j) in pair_key_freqs:
+            i_key = get_key(i, Choice.RIGHT)
+            j_key = get_key(j, Choice.LEFT)
+            if is_same_hand(i_key, j_key) and is_same_finger(i_key, j_key):
+                # Gives penalty if the pair is on the same hand and the same finger
+                I3 += pair_key_freqs[(i, j)] * distance(i_key, j_key)
+        # add zero-consonant finger alternations
+        for final, key_pair in config.zero_consonant_layout.items():
+            if is_same_hand(key_pair[0], key_pair[1]) and is_same_finger(
+                key_pair[0], key_pair[1]
+            ):
+                I3 += single_key_freqs.get(final, 0) * distance(
+                    key_pair[0], key_pair[1]
+                )
+        return I3 / 100
 
-def xiaohe_score() -> float:
+    def big_steps() -> float:
+        I4 = 0.0
+        for (i, j) in pair_key_freqs:
+            i_key = get_key(i, Choice.RIGHT)
+            j_key = get_key(j, Choice.LEFT)
+            if is_same_hand(i_key, j_key):
+                # Gives penalty if the pair is on the same hand
+                I4 += pair_key_freqs[(i, j)] * get_big_step_penalty(i_key, j_key)
+        # add zero-consonant finger alternations
+        for final, key_pair in config.zero_consonant_layout.items():
+            if is_same_hand(key_pair[0], key_pair[1]):
+                I4 += single_key_freqs.get(final, 0) * get_big_step_penalty(
+                    key_pair[0], key_pair[1]
+                )
+        return I4 / 100
+
+    def hit_direction() -> float:
+        I5 = 0.0
+        for (i, j) in pair_key_freqs:
+            i_key = get_key(i, Choice.RIGHT)
+            j_key = get_key(j, Choice.LEFT)
+            if is_same_hand(i_key, j_key) and not is_preferred_hit_direction(
+                i_key, j_key
+            ):
+                # Gives penalty if the pair is on the same hand and not in preferred hit direction
+                I5 += pair_key_freqs[(i, j)]
+        # add zero-consonant finger alternations
+        for final, key_pair in config.zero_consonant_layout.items():
+            if is_same_hand(
+                key_pair[0], key_pair[1]
+            ) and not is_preferred_hit_direction(key_pair[0], key_pair[1]):
+                I5 += single_key_freqs.get(final, 0)
+        return I5 / 100
+
     return (
-        xiaohe_workload_distribution() * 0.45
-        + xiaohe_hand_alternation() * 1.0
-        + xiaohe_finger_alternation() * 0.8
-        + xiaohe_big_steps() * 0.7
-        + xiaohe_hit_direction() * 0.6
+        workload_distribution() * 0.45
+        + hand_alternation() * 1.0
+        + finger_alternation() * 0.8
+        + big_steps() * 0.7
+        + hit_direction() * 0.6
     )
 
 
-print(xiaohe_workload_distribution())
-print(xiaohe_hand_alternation())
-print(xiaohe_finger_alternation())
-print(xiaohe_big_steps())
-print(xiaohe_hit_direction())
+### Xiaohe Shuangpin (小鹤双拼) configurations
+xiaohe_config = ShuangpinConfig(
+    layout={
+        "iu": "q",
+        "ei": "w",
+        "uan": "r",
+        "ue": "t",
+        "un": "y",
+        "sh": "u",
+        "ch": "i",
+        "uo": "o",
+        "ie": "p",
+        "ong": "s",
+        "ai": "d",
+        "en": "f",
+        "eng": "g",
+        "ang": "h",
+        "an": "j",
+        "uai": "k",
+        "uang": "l",
+        "ou": "z",
+        "ua": "x",
+        "ao": "c",
+        "ui": "v",
+        "zh": "v",
+        "in": "b",
+        "iao": "n",
+        "ian": "m",
+    },
+    zero_consonant_layout={
+        "a": ("a", "a"),
+        "e": ("e", "e"),
+        "o": ("o", "o"),
+        "ai": ("a", "i"),
+        "ei": ("e", "i"),
+        "ou": ("o", "u"),
+        "an": ("a", "n"),
+        "en": ("e", "n"),
+        "ang": ("a", "h"),
+        "eng": ("e", "g"),
+        "ao": ("a", "o"),
+        "er": ("e", "r"),
+    },
+    # Map variant finals to standard finals
+    # standards appear on the top of the key in the keyboard diagram
+    # variants appear below the standards
+    variant_to_standard_finals={
+        "ve": "ue",
+        "o": "uo",
+        "iong": "ong",
+        "ing": "uai",
+        "iang": "uang",
+        "ia": "ua",
+        "v": "ui",
+    },
+)
 
-print(xiaohe_score())
+print(get_score(xiaohe_config))
