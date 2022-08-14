@@ -41,7 +41,7 @@ def process_line(line, fields):
                 freqs.single_freqs[final] += 1
                 seq.append(final)
         else:
-            final = pinyin
+            final = pinyin + "F"
             freqs.single_freqs[final] += 1
             seq.append(final)
 
