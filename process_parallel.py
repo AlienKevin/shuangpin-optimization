@@ -9,6 +9,7 @@ import argparse
 from dataclasses import dataclass, field
 from collections import defaultdict
 from typing import TypeAlias
+from spacy.lang.zh import Chinese
 
 initial_regex = re.compile("(ch|zh|sh|r|c|b|d|g|f|h|k|j|m|l|n|q|p|s|t|w|y|x|z)")
 
@@ -23,11 +24,21 @@ class Freqs:
     pair_freqs: PairFreqs = field(default_factory=lambda: defaultdict(int))
 
 
+# PKUSeg with "mixed" model provided by pkuseg
+cfg = {"segmenter": "pkuseg"}
+nlp = Chinese.from_config({"nlp": {"tokenizer": cfg}})
+nlp.tokenizer.initialize(pkuseg_model="mixed")
+
+
+def segment_words(line):
+    return list(map(lambda token: token.text, nlp(line)))
+
+
 def process_line(line, fields):
     freqs = Freqs()
     data = json.loads(line)
     pinyins = lazy_pinyin(
-        " ".join(map(lambda field: data[field], fields)), errors="ignore"
+        segment_words(" ".join(map(lambda field: data[field], fields))), errors="ignore"
     )
     seq = []
     for pinyin in pinyins:
