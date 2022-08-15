@@ -4,12 +4,12 @@ from pypinyin import lazy_pinyin
 import multiprocessing as mp
 import os
 import sys
-import time
 import argparse
 from dataclasses import dataclass, field
 from collections import defaultdict
 from typing import TypeAlias
 from spacy.lang.zh import Chinese
+from utils import measure
 
 initial_regex = re.compile("(ch|zh|sh|r|c|b|d|g|f|h|k|j|m|l|n|q|p|s|t|w|y|x|z)")
 
@@ -201,18 +201,6 @@ def serialize_pair_freqs(freqs: PairFreqs):
     print()
     with open("pair_freqs.json", "w+") as outfile:
         json.dump(outputs, outfile)
-
-
-def measure(func, *args):
-    time_start = time.time()
-    result = func(*args)
-    time_end = time.time()
-    print(
-        "{name} took {time:.0f}s to complete.".format(
-            name=func.__name__, time=time_end - time_start
-        )
-    )
-    return result
 
 
 if __name__ == "__main__":
