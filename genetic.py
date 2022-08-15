@@ -3,6 +3,8 @@ from shuangpin import (
     get_random_final_layout,
     get_score,
     xiaohe_config,
+    qwerty_layout,
+    digraph_initials,
 )
 import random
 from dataclasses import dataclass, replace
@@ -13,6 +15,58 @@ from utils import random_choice_except_index
 class Chromosome:
     final_keys: list[str]
     digraph_initial_keys: list[str]
+
+
+def final_keys_to_layout(keys: list[str]) -> dict[str, str]:
+    return {final: keys[i] for i, final in enumerate(xiaohe_config.final_layout.keys())}
+
+
+def digraph_initial_keys_to_layout(keys: list[str]) -> dict[str, str]:
+    return {
+        digraph_initial: keys[i]
+        for i, digraph_initial in enumerate(xiaohe_config.digraph_initial_layout.keys())
+    }
+
+
+def print_final_keys(final_keys: list[str]):
+    final_layout = final_keys_to_layout(final_keys)
+    # Add the keys not mapped to any final
+    for key in qwerty_layout.keys():
+        if key not in final_keys:
+            final_layout[key] = key
+    finals = list(
+        map(
+            lambda item: item[0],
+            sorted(
+                final_layout.items(),
+                key=lambda item: list(qwerty_layout.keys()).index(item[1]),
+            ),
+        )
+    )
+    upper_row = finals[:10]
+    home_row = finals[10:19]
+    bottom_row = finals[19:26]
+    print("\t".join(upper_row))
+    print("\t".join(home_row))
+    print("\t".join(bottom_row))
+
+
+def print_digraph_initial_keys(digraph_keys: list[str]):
+    print(
+        "\t".join(
+            map(
+                lambda item: item[0] + ":" + item[1],
+                zip(digraph_initials, digraph_keys),
+            )
+        )
+    )
+
+
+def print_chromosome(chromosome: Chromosome):
+    print_final_keys(chromosome.final_keys)
+    print()
+    print_digraph_initial_keys(chromosome.digraph_initial_keys)
+    print(flush=True)
 
 
 def get_random_chromosome():
@@ -30,16 +84,10 @@ def score_chromosome(chromosome: Chromosome) -> float:
     return get_score(
         replace(
             xiaohe_config,
-            final_layout={
-                final: chromosome.final_keys[i]
-                for i, final in enumerate(xiaohe_config.final_layout.keys())
-            },
-            digraph_initial_layout={
-                digraph_initial: chromosome.digraph_initial_keys[i]
-                for i, digraph_initial in enumerate(
-                    xiaohe_config.digraph_initial_layout.keys()
-                )
-            },
+            final_layout=final_keys_to_layout(chromosome.final_keys),
+            digraph_initial_layout=digraph_initial_keys_to_layout(
+                chromosome.digraph_initial_keys
+            ),
         )
     )
 
@@ -103,7 +151,7 @@ def reproduction(pool: list[Chromosome]):
             donor = random_choice_except_index(parents, i)
             child = crossover(receiver, donor)
             pool.append(child)
-    print("len(pool): ", len(pool))
+    # print("len(pool): ", len(pool))
     return pool
 
 
@@ -111,6 +159,8 @@ def genetic_algorithm():
     pool = initialization()
     for i in range(100):
         print(i, score_chromosome(pool[0]))
+        print_chromosome(pool[0])
+
         pool = evaluation(pool)
         pool = selection(pool)
         pool = reproduction(pool)
