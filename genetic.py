@@ -1,6 +1,7 @@
 from shuangpin import (
     get_random_digraph_initial_layout,
     get_random_final_layout,
+    get_random_zero_consonant_final_layout,
     get_score,
     xiaohe_config,
     qwerty_layout,
@@ -17,6 +18,7 @@ from utils import random_choice_except_index
 class Chromosome:
     final_keys: list[str]
     digraph_initial_keys: list[str]
+    zero_consonant_final_keys: list[tuple[str, str]]
 
 
 def final_keys_to_layout(keys: list[str]) -> dict[str, str]:
@@ -27,6 +29,17 @@ def digraph_initial_keys_to_layout(keys: list[str]) -> dict[str, str]:
     return {
         digraph_initial: keys[i]
         for i, digraph_initial in enumerate(xiaohe_config.digraph_initial_layout.keys())
+    }
+
+
+def zero_consonant_final_keys_to_layout(
+    keys: list[tuple[str, str]]
+) -> dict[str, tuple[str, str]]:
+    return {
+        zero_consonant_final: keys[i]
+        for i, zero_consonant_final in enumerate(
+            xiaohe_config.zero_consonant_final_layout.keys()
+        )
     }
 
 
@@ -64,11 +77,27 @@ def print_digraph_initial_keys(digraph_keys: list[str]):
     )
 
 
+def print_zero_consonant_final_keys(zero_consonant_final_keys: list[tuple[str, str]]):
+    zero_consonant_final_layout = zero_consonant_final_keys_to_layout(
+        zero_consonant_final_keys
+    )
+    print(
+        "\t".join(
+            map(
+                lambda item: item[0] + ":" + item[1][0] + item[1][1],
+                zero_consonant_final_layout.items(),
+            )
+        )
+    )
+
+
 def print_chromosome(chromosome: Chromosome):
     print_final_keys(chromosome.final_keys)
     print()
     print_digraph_initial_keys(chromosome.digraph_initial_keys)
-    print(flush=True)
+    print()
+    print_zero_consonant_final_keys(chromosome.zero_consonant_final_keys)
+    print("\n" + "-" * 30 + "\n", flush=True)
 
 
 def get_random_chromosome():
@@ -79,6 +108,11 @@ def get_random_chromosome():
             ).values()
         ),
         digraph_initial_keys=list(get_random_digraph_initial_layout().values()),
+        zero_consonant_final_keys=list(
+            get_random_zero_consonant_final_layout(
+                xiaohe_config.zero_consonant_final_layout
+            ).values()
+        ),
     )
 
 
@@ -89,6 +123,9 @@ def score_chromosome(chromosome: Chromosome) -> float:
             final_layout=final_keys_to_layout(chromosome.final_keys),
             digraph_initial_layout=digraph_initial_keys_to_layout(
                 chromosome.digraph_initial_keys
+            ),
+            zero_consonant_final_layout=zero_consonant_final_keys_to_layout(
+                chromosome.zero_consonant_final_keys
             ),
         )
     )
@@ -149,9 +186,24 @@ def crossover(
         child_digraph_initial_keys[
             digraph_initial_mutation_index
         ] = donor_digraph_initial_key
+
+    # mutate zero-consonant finals in receiver
+    # there are only 4 zero-consonant finals that can be remapped
+    zero_consonant_final_mutation_index = random.randint(0, 3)
+    child_zero_consonant_final_keys = receiver.zero_consonant_final_keys.copy()
+    donor_zero_consonant_final_key = donor.zero_consonant_final_keys[
+        zero_consonant_final_mutation_index
+    ]
+    # Only replace with donor's if it doesn't conflict with existing mappings
+    if donor_zero_consonant_final_key not in child_zero_consonant_final_keys:
+        child_zero_consonant_final_keys[
+            zero_consonant_final_mutation_index
+        ] = donor_zero_consonant_final_key
+
     return Chromosome(
         final_keys=child_final_keys,
         digraph_initial_keys=child_digraph_initial_keys,
+        zero_consonant_final_keys=child_zero_consonant_final_keys,
     )
 
 
