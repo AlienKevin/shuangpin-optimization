@@ -1,0 +1,126 @@
+0 1.9275301423612878
+in	ou	e	un	ua	ong	u	i	uo	ie
+a	uan	ao	ue	ai	eng	ang	an	ei
+iu	uang	uai	ui	en	ian	iao
+
+zh:i	ch:u	sh:a
+
+1 1.85100404932084
+ue	un	e	ie	iao	ian	u	i	uo	ong
+a	uang	ang	ao	ou	an	uan	eng	en
+iu	in	uai	ui	ua	ei	ai
+
+zh:e	ch:u	sh:v
+
+2 1.818946129110671
+ue	un	e	ie	iao	eng	u	i	uo	ong
+a	uang	ang	ao	ou	ian	uan	ai	en
+iu	in	uai	ui	ua	ei	an
+
+zh:e	ch:u	sh:v
+
+3 1.8108587946511516
+ue	un	e	ie	iao	eng	u	i	uo	ong
+a	uang	ang	ao	ou	ian	uan	ai	en
+iu	in	uai	ui	ua	ei	an
+
+zh:e	ch:a	sh:v
+
+4 1.7766601048016302
+ie	in	e	un	iao	ang	u	i	uo	ong
+a	uan	ou	uang	ue	en	eng	ai	ei
+iu	uai	ua	ui	ao	an	ian
+
+zh:e	ch:a	sh:v
+
+5 1.7759754578818507
+uai	in	e	un	iao	ang	u	i	uo	ong
+a	uan	ou	uang	ue	en	eng	ai	ei
+iu	ie	ua	ui	ao	an	ian
+
+zh:e	ch:a	sh:v
+
+6 1.7707923717187033
+uai	in	e	un	iao	ang	u	i	uo	ong
+a	ue	ou	uang	uan	en	ian	ai	ei
+iu	ao	ua	ui	ie	an	eng
+
+zh:e	ch:a	sh:v
+
+7 1.767340472244763
+uai	in	e	un	iao	ang	u	i	uo	ong
+a	ue	ou	uang	uan	en	ian	ai	ei
+iu	ao	ua	ui	ie	eng	an
+
+zh:e	ch:a	sh:v
+
+8 1.7563896322123922
+un	in	e	iu	iao	uan	u	i	uo	ong
+a	uang	uai	ao	ua	ang	an	ai	eng
+ue	ie	ou	ui	ei	en	ian
+
+zh:e	ch:a	sh:v
+
+9 1.755982504834902
+un	in	e	iu	iao	uan	u	i	uo	ang
+a	uang	uai	ao	ua	ong	an	ai	eng
+ue	ie	ou	ui	ei	en	ian
+
+zh:e	ch:a	sh:v
+
+10 1.7499133301013254
+uai	in	e	un	iao	ang	u	i	uo	ong
+a	ue	ou	ao	uan	en	ai	an	ei
+iu	uang	ua	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+
+11 1.7488253520103985
+uai	in	e	un	iao	ong	u	i	uo	ang
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	ua	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+
+12 1.7461110596037817
+in	ie	e	un	ua	ang	u	i	uo	ong
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	iao	ui	uai	eng	ian
+
+zh:e	ch:a	sh:v
+
+13 1.7443320624562635
+uai	in	e	un	ua	ang	u	i	uo	ong
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	iao	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+
+14 1.7443320624562635
+uai	in	e	un	ua	ang	u	i	uo	ong
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	iao	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+
+15 1.7435939802872682
+uai	in	e	un	ua	ong	u	i	uo	ang
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	iao	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+
+16 1.7435939802872682
+uai	in	e	un	ua	ong	u	i	uo	ang
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	iao	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+
+17 1.7435939802872682
+uai	in	e	un	ua	ong	u	i	uo	ang
+a	ue	ou	ao	uan	en	an	ai	ei
+iu	uang	iao	ui	ie	eng	ian
+
+zh:e	ch:a	sh:v
+

@@ -246,28 +246,28 @@ xiaohe_config = ShuangpinConfig(
 ### Foxi Shuangpin (佛系双拼) configurations
 foxi_config = ShuangpinConfig(
     final_layout={
-        "iu": "q",
-        "ei": "w",
-        "un": "r",
-        "ua": "t",
-        "ang": "y",
+        "in": "q",
+        "un": "w",
+        "ua": "r",
+        "iu": "t",
+        "ong": "y",
         "uo": "o",
-        "ong": "p",
-        "iao": "s",
-        "ue": "d",
+        "ang": "p",
+        "ue": "s",
+        "ao": "d",
         "ou": "f",
         "uan": "g",
-        "eng": "h",
-        "ian": "j",
-        "an": "k",
+        "an": "h",
+        "en": "j",
+        "ian": "k",
         "ai": "l",
-        "in": "z",
-        "ie": "x",
-        "ao": "c",
+        "uang": "z",
+        "uai": "x",
+        "ie": "c",
         "ui": "v",
-        "uai": "b",
-        "uang": "n",
-        "en": "m",
+        "iao": "b",
+        "eng": "n",
+        "ei": "m",
     },
     # keys must be in the order of the digraph_initials list
     digraph_initial_layout={
@@ -276,16 +276,16 @@ foxi_config = ShuangpinConfig(
         "sh": "v",
     },
     zero_consonant_final_layout={
-        "a": ("a", "j"),
+        "a": ("a", "h"),
         "e": ("e", "j"),
-        "o": ("o", "f"),
+        "o": ("o", "h"),
         "ai": ("a", "i"),
         "ei": ("e", "i"),
         "ou": ("o", "u"),
         "an": ("a", "n"),
         "en": ("e", "n"),
-        "ang": ("a", "h"),
-        "eng": ("e", "h"),
+        "ang": ("a", "p"),
+        "eng": ("e", "k"),
         "ao": ("a", "o"),
         "er": ("e", "r"),
     },
@@ -703,8 +703,8 @@ def get_score(
     )
 
 
-# print("xiaohe score = {}".format(get_score(xiaohe_config)))
-# print("ziranma score = {}".format(get_score(ziranma_config)))
-# print("intelligent ABC score = {}".format(get_score(intelligent_abc_config)))
-# print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia_config)))
-# print("foxi score = {}".format(get_score(foxi_config)))
+print("xiaohe score = {}".format(get_score(xiaohe_config)))
+print("ziranma score = {}".format(get_score(ziranma_config)))
+print("intelligent ABC score = {}".format(get_score(intelligent_abc_config)))
+print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia_config)))
+print("foxi score = {}".format(get_score(foxi_config)))
