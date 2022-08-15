@@ -82,9 +82,14 @@ def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
     # there are only 3 digraph initials in Hanyu Pinyin
     digraph_initial_mutation_index = random.randint(0, 2)
     child_digraph_initial_keys = receiver.digraph_initial_keys.copy()
-    child_digraph_initial_keys[
+    donor_digraph_initial_key = donor.digraph_initial_keys[
         digraph_initial_mutation_index
-    ] = donor.digraph_initial_keys[digraph_initial_mutation_index]
+    ]
+    # Only replace with donor's if it doesn't conflict with existing mappings
+    if donor_digraph_initial_key not in child_digraph_initial_keys:
+        child_digraph_initial_keys[
+            digraph_initial_mutation_index
+        ] = donor_digraph_initial_key
     return Chromosome(
         final_keys=child_final_keys,
         digraph_initial_keys=child_digraph_initial_keys,
