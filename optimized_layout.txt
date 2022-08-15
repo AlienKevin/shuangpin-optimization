@@ -1,0 +1,7 @@
+Score = 1.9064711369496843
+
+iu	ei	e	un	ua	ang	u	i	uo	ong
+a	ui	ue	ou	uan	eng	ian	an	ai
+in	ie	ao	iao	uai	uang	en
+
+zh:e	ch:a	sh:v
