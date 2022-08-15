@@ -6,6 +6,7 @@ from shuangpin import (
 )
 import random
 from dataclasses import dataclass, replace
+from utils import random_choice_except_index
 
 
 @dataclass
@@ -92,9 +93,9 @@ def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
 
 def reproduction(pool: list[Chromosome]):
     parents = pool[:1000]
-    for receiver in parents:
+    for i, receiver in enumerate(parents):
         for _ in range(10):
-            donor = random.choice([i for i in parents if i != receiver])
+            donor = random_choice_except_index(parents, i)
             child = crossover(receiver, donor)
             pool.append(child)
     print("len(pool): ", len(pool))
