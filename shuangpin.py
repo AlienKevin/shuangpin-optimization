@@ -486,14 +486,21 @@ pinyin_jiajia_config = ShuangpinConfig(
 )
 
 
-def get_random_final_layout(
+def get_fixed_final_keys(
     final_layout: dict[str, str], variant_to_standard_finals: dict[str, str]
-) -> dict[str, str]:
+) -> set[Key]:
     standard_to_variant_finals = {v: k for k, v in variant_to_standard_finals.items()}
     fixed_final_keys = set()
     for final, key in final_layout.items():
         if final == key or standard_to_variant_finals.get(final) == key:
             fixed_final_keys.add(key)
+    return fixed_final_keys
+
+
+def get_random_final_layout(
+    final_layout: dict[str, str], variant_to_standard_finals: dict[str, str]
+) -> dict[str, str]:
+    fixed_final_keys = get_fixed_final_keys(final_layout, variant_to_standard_finals)
     flexible_final_keys = set(final_layout.values()) - fixed_final_keys
     random_layout = dict()
     for final, key in final_layout.items():
