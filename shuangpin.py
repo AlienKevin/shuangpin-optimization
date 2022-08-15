@@ -2,6 +2,7 @@ import json
 from enum import Enum, IntEnum
 from dataclasses import dataclass
 import random
+from itertools import product
 
 # first: 0 = left hand, 1 = right hand
 # second: 1 = index finger, 2 = index finger, 3 = middle finger, 4 = ring finger, 5 = little finger
@@ -170,7 +171,7 @@ class ShuangpinConfig:
     # digraph initials' keys must be unique among all digraph initials
     # but they can share the keys with finals
     digraph_initial_layout: dict[str, str]
-    zero_consonant_layout: dict[str, tuple[str, str]]
+    zero_consonant_final_layout: dict[str, tuple[str, str]]
     # Map variant finals to standard finals
     # REQUIRES: the standard final values must be unique
     variant_to_standard_finals: dict[str, str]
@@ -215,7 +216,7 @@ xiaohe_config = ShuangpinConfig(
         "ch": "i",
         "sh": "u",
     },
-    zero_consonant_layout={
+    zero_consonant_final_layout={
         "a": ("a", "a"),
         "e": ("e", "e"),
         "o": ("o", "o"),
@@ -274,7 +275,7 @@ foxi_config = ShuangpinConfig(
         "ch": "a",
         "sh": "v",
     },
-    zero_consonant_layout={
+    zero_consonant_final_layout={
         "a": ("a", "j"),
         "e": ("e", "j"),
         "o": ("o", "f"),
@@ -334,7 +335,7 @@ ziranma_config = ShuangpinConfig(
         "ch": "i",
         "sh": "u",
     },
-    zero_consonant_layout={
+    zero_consonant_final_layout={
         "a": ("a", "a"),
         "e": ("e", "e"),
         "o": ("o", "o"),
@@ -394,7 +395,7 @@ intelligent_abc_config = ShuangpinConfig(
         "ch": "e",
         "sh": "v",
     },
-    zero_consonant_layout={
+    zero_consonant_final_layout={
         "a": ("o", "a"),
         "e": ("o", "e"),
         "o": ("o", "o"),
@@ -455,7 +456,7 @@ pinyin_jiajia_config = ShuangpinConfig(
         "ch": "u",
         "sh": "i",
     },
-    zero_consonant_layout={
+    zero_consonant_final_layout={
         "a": ("a", "a"),
         "e": ("e", "e"),
         "o": ("o", "o"),
@@ -531,13 +532,44 @@ def get_random_digraph_initial_layout() -> dict[str, str]:
 # print(get_random_digraph_initial_layout())
 
 
+def get_random_zero_consonant_final_layout(
+    zero_consonant_final_layout: dict[str, tuple[str, str]]
+) -> dict[str, tuple[str, str]]:
+    random_layout = dict()
+    flexible_zero_consonant_finals = {"a", "e", "o", "ang", "eng"}
+    flexible_first_keys = {"a", "e", "o"}
+    fixed_keys = {
+        key
+        for final, key in zero_consonant_final_layout.items()
+        if final not in flexible_zero_consonant_finals
+    }
+    flexible_keys: dict[str, set[tuple[str, str]]] = {
+        k: (set(product({k}, qwerty_layout.keys())) - fixed_keys)
+        for k in flexible_first_keys
+    }
+    for final in zero_consonant_final_layout.keys():
+        if final in flexible_zero_consonant_finals:
+            # first key is restricted to the first letter of the final
+            first_key = final[0]
+            random_layout[final] = random.choice(list(flexible_keys[first_key]))
+            flexible_keys[first_key].remove(random_layout[final])
+        else:
+            random_layout[final] = zero_consonant_final_layout[final]
+    return random_layout
+
+
+# print(get_random_zero_consonant_final_layout(xiaohe_config.zero_consonant_final_layout))
+
+
 def get_random_config() -> ShuangpinConfig:
     return ShuangpinConfig(
         final_layout=get_random_final_layout(
             xiaohe_config.final_layout, xiaohe_config.variant_to_standard_finals
         ),
         digraph_initial_layout=get_random_digraph_initial_layout(),
-        zero_consonant_layout=xiaohe_config.zero_consonant_layout,
+        zero_consonant_final_layout=get_random_zero_consonant_final_layout(
+            xiaohe_config.zero_consonant_final_layout
+        ),
         variant_to_standard_finals=xiaohe_config.variant_to_standard_finals,
     )
 
@@ -551,7 +583,7 @@ def get_score(
     def get_key(i: str, zero_consonant_choice: Choice) -> str:
         if is_zero_consonant_final(i):
             final = strip_zero_consonant_final_tag(i)
-            return config.zero_consonant_layout[final][
+            return config.zero_consonant_final_layout[final][
                 0 if zero_consonant_choice == Choice.LEFT else 1
             ]
         elif is_digraph_initial(i):
@@ -583,7 +615,7 @@ def get_score(
         for i, freq in single_key_freqs.items():
             if is_zero_consonant_final(i):
                 final = strip_zero_consonant_final_tag(i)
-                (first_key, second_key) = config.zero_consonant_layout[final]
+                (first_key, second_key) = config.zero_consonant_final_layout[final]
                 key_freqs[first_key] = key_freqs.get(first_key, 0) + freq
                 key_freqs[second_key] = key_freqs.get(second_key, 0) + freq
             else:
@@ -605,7 +637,7 @@ def get_score(
                 # Gives penalty if the two keys are on the same hand
                 I2 += pair_key_freqs[(i, j)]
         # add zero-consonant hand alternations
-        for final, key_pair in config.zero_consonant_layout.items():
+        for final, key_pair in config.zero_consonant_final_layout.items():
             if is_same_hand(key_pair[0], key_pair[1]):
                 I2 += single_key_freqs.get(final, 0)
         return I2 / 100
@@ -619,7 +651,7 @@ def get_score(
                 # Gives penalty if the pair is on the same hand and the same finger
                 I3 += pair_key_freqs[(i, j)] * distance(i_key, j_key)
         # add zero-consonant finger alternations
-        for final, key_pair in config.zero_consonant_layout.items():
+        for final, key_pair in config.zero_consonant_final_layout.items():
             if is_same_hand(key_pair[0], key_pair[1]) and is_same_finger(
                 key_pair[0], key_pair[1]
             ):
@@ -637,7 +669,7 @@ def get_score(
                 # Gives penalty if the pair is on the same hand
                 I4 += pair_key_freqs[(i, j)] * get_big_step_penalty(i_key, j_key)
         # add zero-consonant finger alternations
-        for final, key_pair in config.zero_consonant_layout.items():
+        for final, key_pair in config.zero_consonant_final_layout.items():
             if is_same_hand(key_pair[0], key_pair[1]):
                 I4 += single_key_freqs.get(final, 0) * get_big_step_penalty(
                     key_pair[0], key_pair[1]
@@ -655,7 +687,7 @@ def get_score(
                 # Gives penalty if the pair is on the same hand and not in preferred hit direction
                 I5 += pair_key_freqs[(i, j)]
         # add zero-consonant finger alternations
-        for final, key_pair in config.zero_consonant_layout.items():
+        for final, key_pair in config.zero_consonant_final_layout.items():
             if is_same_hand(
                 key_pair[0], key_pair[1]
             ) and not is_preferred_hit_direction(key_pair[0], key_pair[1]):
@@ -671,8 +703,8 @@ def get_score(
     )
 
 
-print("xiaohe score = {}".format(get_score(xiaohe_config)))
-print("ziranma score = {}".format(get_score(ziranma_config)))
-print("intelligent ABC score = {}".format(get_score(intelligent_abc_config)))
-print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia_config)))
-print("foxi score = {}".format(get_score(foxi_config)))
+# print("xiaohe score = {}".format(get_score(xiaohe_config)))
+# print("ziranma score = {}".format(get_score(ziranma_config)))
+# print("intelligent ABC score = {}".format(get_score(intelligent_abc_config)))
+# print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia_config)))
+# print("foxi score = {}".format(get_score(foxi_config)))
