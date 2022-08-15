@@ -1,6 +1,7 @@
 import json
 from enum import Enum, IntEnum
 from dataclasses import dataclass
+import random
 
 # first: 0 = left hand, 1 = right hand
 # second: 1 = index finger, 2 = index finger, 3 = middle finger, 4 = ring finger, 5 = little finger
@@ -239,6 +240,45 @@ xiaohe_config = ShuangpinConfig(
         "v": "ui",
     },
 )
+
+
+def get_random_final_layout(
+    final_layout: dict[str, str], variant_to_standard_finals: dict[str, str]
+) -> dict[str, str]:
+    standard_to_variant_finals = {v: k for k, v in variant_to_standard_finals.items()}
+    fixed_final_keys = set()
+    for final, key in final_layout.items():
+        if final == key or standard_to_variant_finals.get(final) == key:
+            fixed_final_keys.add(key)
+    flexible_final_keys = set(final_layout.values()) - fixed_final_keys
+    random_layout = dict()
+    for final, key in final_layout.items():
+        if key in fixed_final_keys:
+            random_layout[final] = key
+        else:
+            random_layout[final] = random.choice(list(flexible_final_keys))
+            flexible_final_keys.remove(random_layout[final])
+    return random_layout
+
+
+def get_random_digraph_initial_layout() -> dict[str, str]:
+    random_layout = dict()
+    flexible_digraph_initial_keys = {"a", "e", "i", "o", "u", "v"}
+    for initial in digraph_initials:
+        random_layout[initial] = random.choice(list(flexible_digraph_initial_keys))
+        flexible_digraph_initial_keys.remove(random_layout[initial])
+    return random_layout
+
+
+def get_random_config() -> ShuangpinConfig:
+    return ShuangpinConfig(
+        final_layout=get_random_final_layout(
+            xiaohe_config.final_layout, xiaohe_config.variant_to_standard_finals
+        ),
+        digraph_initial_layout=get_random_digraph_initial_layout(),
+        zero_consonant_layout=xiaohe_config.zero_consonant_layout,
+        variant_to_standard_finals=xiaohe_config.variant_to_standard_finals,
+    )
 
 
 def get_score(
