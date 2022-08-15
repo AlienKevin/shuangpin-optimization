@@ -493,7 +493,7 @@ def get_score(
     single_key_freqs: dict[Key, float] = single_freqs.copy()
     pair_key_freqs: dict[tuple[Key, Key], float] = pair_freqs.copy()
 
-    for standard, variant in config.variant_to_standard_finals.items():
+    for variant, standard in config.variant_to_standard_finals.items():
         single_key_freqs[standard] += single_key_freqs[variant]
         single_key_freqs.pop(variant)
 
