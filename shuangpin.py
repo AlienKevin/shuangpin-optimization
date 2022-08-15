@@ -242,6 +242,65 @@ xiaohe_config = ShuangpinConfig(
     },
 )
 
+### Foxi Shuangpin (佛系双拼) configurations
+foxi_config = ShuangpinConfig(
+    final_layout={
+        "iu": "q",
+        "ei": "w",
+        "un": "r",
+        "ua": "t",
+        "ang": "y",
+        "uo": "o",
+        "ong": "p",
+        "ui": "s",
+        "ue": "d",
+        "ou": "f",
+        "uan": "g",
+        "eng": "h",
+        "ian": "j",
+        "an": "k",
+        "ai": "l",
+        "in": "z",
+        "ie": "x",
+        "ao": "c",
+        "iao": "v",
+        "uai": "b",
+        "uang": "n",
+        "en": "m",
+    },
+    # keys must be in the order of the digraph_initials list
+    digraph_initial_layout={
+        "zh": "e",
+        "ch": "a",
+        "sh": "v",
+    },
+    zero_consonant_layout={
+        "a": ("a", "a"),
+        "e": ("e", "e"),
+        "o": ("o", "o"),
+        "ai": ("a", "i"),
+        "ei": ("e", "i"),
+        "ou": ("o", "u"),
+        "an": ("a", "n"),
+        "en": ("e", "n"),
+        "ang": ("a", "h"),
+        "eng": ("e", "g"),
+        "ao": ("a", "o"),
+        "er": ("e", "r"),
+    },
+    # standards appear on the top of the key in the keyboard diagram
+    # variants appear below the standards
+    variant_to_standard_finals={
+        "ve": "ue",
+        "o": "uo",
+        "iong": "ong",
+        "ing": "uai",
+        "iang": "uang",
+        "ia": "ua",
+        "v": "ui",
+    },
+)
+
 
 def get_random_final_layout(
     final_layout: dict[str, str], variant_to_standard_finals: dict[str, str]
@@ -421,4 +480,5 @@ def get_score(
     )
 
 
-# print(get_score(xiaohe_config))
+print("xiaohe score = {}".format(get_score(xiaohe_config)))
+print("foxi score = {}".format(get_score(foxi_config)))
