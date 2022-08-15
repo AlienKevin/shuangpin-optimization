@@ -243,3 +243,66 @@ uang	uai	ie	iao	ue	eng	en
 
 zh:e	ch:a	sh:v
 
+35 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+36 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+37 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+38 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+39 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+40 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+41 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+42 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
+43 1.8744608369931046
+iu	ei	e	in	ua	ong	u	i	uan	ang
+a	ui	ao	ou	un	uo	an	ai	ian
+uang	uai	ie	iao	ue	eng	en
+
+zh:e	ch:a	sh:v
+
