@@ -164,15 +164,87 @@ def get_big_step_penalty(i: Key, j: Key) -> int:
 
 @dataclass
 class ShuangpinConfig:
-    layout: dict[str, str]
+    # Maps standard finals to keys
+    final_layout: dict[str, str]
+    # digraph initials' keys must be unique among all digraph initials
+    # but they can share the keys with finals
+    digraph_initial_layout: dict[str, str]
     zero_consonant_layout: dict[str, tuple[str, str]]
+    # Map variant finals to standard finals
+    # REQUIRES: the standard final values must be unique
     variant_to_standard_finals: dict[str, str]
+
+
+digraph_initials: set[str] = {"zh", "ch", "sh"}
+
+
+def is_digraph_initial(initial: str) -> bool:
+    return initial in digraph_initials
+
+
+### Xiaohe Shuangpin (小鹤双拼) configurations
+xiaohe_config = ShuangpinConfig(
+    final_layout={
+        "iu": "q",
+        "ei": "w",
+        "uan": "r",
+        "ue": "t",
+        "un": "y",
+        "uo": "o",
+        "ie": "p",
+        "ong": "s",
+        "ai": "d",
+        "en": "f",
+        "eng": "g",
+        "ang": "h",
+        "an": "j",
+        "uai": "k",
+        "uang": "l",
+        "ou": "z",
+        "ua": "x",
+        "ao": "c",
+        "ui": "v",
+        "in": "b",
+        "iao": "n",
+        "ian": "m",
+    },
+    digraph_initial_layout={
+        "zh": "v",
+        "sh": "u",
+        "ch": "i",
+    },
+    zero_consonant_layout={
+        "a": ("a", "a"),
+        "e": ("e", "e"),
+        "o": ("o", "o"),
+        "ai": ("a", "i"),
+        "ei": ("e", "i"),
+        "ou": ("o", "u"),
+        "an": ("a", "n"),
+        "en": ("e", "n"),
+        "ang": ("a", "h"),
+        "eng": ("e", "g"),
+        "ao": ("a", "o"),
+        "er": ("e", "r"),
+    },
+    # standards appear on the top of the key in the keyboard diagram
+    # variants appear below the standards
+    variant_to_standard_finals={
+        "ve": "ue",
+        "o": "uo",
+        "iong": "ong",
+        "ing": "uai",
+        "iang": "uang",
+        "ia": "ua",
+        "v": "ui",
+    },
+)
 
 
 def get_score(
     config: ShuangpinConfig,
 ) -> float:
-    def get_standard_component(final: str) -> str:
+    def get_standard_final(final: str) -> str:
         return config.variant_to_standard_finals.get(final, final)
 
     def get_key(i: str, zero_consonant_choice: Choice) -> str:
@@ -181,8 +253,11 @@ def get_score(
             return config.zero_consonant_layout[final][
                 0 if zero_consonant_choice == Choice.LEFT else 1
             ]
-        standard_component = get_standard_component(i)
-        return config.layout.get(standard_component, standard_component)
+        elif is_digraph_initial(i):
+            return config.digraph_initial_layout[i]
+        else:
+            standard_final = get_standard_final(i)
+            return config.final_layout.get(standard_final, standard_final)
 
     single_key_freqs: dict[Key, float] = single_freqs.copy()
     pair_key_freqs: dict[tuple[Key, Key], float] = pair_freqs.copy()
@@ -193,8 +268,8 @@ def get_score(
 
     for pair in pair_key_freqs.copy():
         standard_pair = (
-            get_standard_component(pair[0]),
-            get_standard_component(pair[1]),
+            get_standard_final(pair[0]),
+            get_standard_final(pair[1]),
         )
         if pair != standard_pair:
             variant_freq = pair_key_freqs.pop(pair)
@@ -294,62 +369,5 @@ def get_score(
         + hit_direction() * 0.6
     )
 
-
-### Xiaohe Shuangpin (小鹤双拼) configurations
-xiaohe_config = ShuangpinConfig(
-    layout={
-        "iu": "q",
-        "ei": "w",
-        "uan": "r",
-        "ue": "t",
-        "un": "y",
-        "sh": "u",
-        "ch": "i",
-        "uo": "o",
-        "ie": "p",
-        "ong": "s",
-        "ai": "d",
-        "en": "f",
-        "eng": "g",
-        "ang": "h",
-        "an": "j",
-        "uai": "k",
-        "uang": "l",
-        "ou": "z",
-        "ua": "x",
-        "ao": "c",
-        "ui": "v",
-        "zh": "v",
-        "in": "b",
-        "iao": "n",
-        "ian": "m",
-    },
-    zero_consonant_layout={
-        "a": ("a", "a"),
-        "e": ("e", "e"),
-        "o": ("o", "o"),
-        "ai": ("a", "i"),
-        "ei": ("e", "i"),
-        "ou": ("o", "u"),
-        "an": ("a", "n"),
-        "en": ("e", "n"),
-        "ang": ("a", "h"),
-        "eng": ("e", "g"),
-        "ao": ("a", "o"),
-        "er": ("e", "r"),
-    },
-    # Map variant finals to standard finals
-    # standards appear on the top of the key in the keyboard diagram
-    # variants appear below the standards
-    variant_to_standard_finals={
-        "ve": "ue",
-        "o": "uo",
-        "iong": "ong",
-        "ing": "uai",
-        "iang": "uang",
-        "ia": "ua",
-        "v": "ui",
-    },
-)
 
 print(get_score(xiaohe_config))
