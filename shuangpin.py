@@ -176,7 +176,7 @@ class ShuangpinConfig:
     variant_to_standard_finals: dict[str, str]
 
 
-digraph_initials: set[str] = {"zh", "ch", "sh"}
+digraph_initials: list[str] = ["zh", "ch", "sh"]
 
 
 def is_digraph_initial(initial: str) -> bool:
@@ -209,10 +209,11 @@ xiaohe_config = ShuangpinConfig(
         "iao": "n",
         "ian": "m",
     },
+    # keys must be in the order of the digraph_initials list
     digraph_initial_layout={
         "zh": "v",
-        "sh": "u",
         "ch": "i",
+        "sh": "u",
     },
     zero_consonant_layout={
         "a": ("a", "a"),
@@ -261,6 +262,13 @@ def get_random_final_layout(
     return random_layout
 
 
+# print(
+#     get_random_final_layout(
+#         xiaohe_config.final_layout, xiaohe_config.digraph_initial_layout
+#     )
+# )
+
+
 def get_random_digraph_initial_layout() -> dict[str, str]:
     random_layout = dict()
     flexible_digraph_initial_keys = {"a", "e", "i", "o", "u", "v"}
@@ -268,6 +276,9 @@ def get_random_digraph_initial_layout() -> dict[str, str]:
         random_layout[initial] = random.choice(list(flexible_digraph_initial_keys))
         flexible_digraph_initial_keys.remove(random_layout[initial])
     return random_layout
+
+
+# print(get_random_digraph_initial_layout())
 
 
 def get_random_config() -> ShuangpinConfig:
@@ -410,4 +421,4 @@ def get_score(
     )
 
 
-print(get_score(xiaohe_config))
+# print(get_score(xiaohe_config))
