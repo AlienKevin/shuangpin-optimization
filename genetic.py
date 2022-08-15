@@ -5,6 +5,8 @@ from shuangpin import (
     xiaohe_config,
     qwerty_layout,
     digraph_initials,
+    Key,
+    get_fixed_final_keys,
 )
 import random
 from dataclasses import dataclass, replace
@@ -109,7 +111,9 @@ def selection(pool: list[Chromosome]):
     return pool[:2000] + [get_random_chromosome() for _ in range(2000)]
 
 
-def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
+def crossover(
+    receiver: Chromosome, donor: Chromosome, fixed_final_keys: set[Key]
+) -> Chromosome:
     # crossover finals
     final_section_length = random.randint(2, 5)
     final_section_start = random.randint(
@@ -119,9 +123,16 @@ def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
         final_section_start : final_section_start + final_section_length
     ]
     child_final_keys = receiver.final_keys.copy()
-    final_section_keys_in_donor_order = sorted(
-        final_section_keys, key=lambda key: donor.final_keys.index(key)
+    final_section_keys_ordered_iterator = iter(
+        sorted(
+            (k for k in final_section_keys if k not in fixed_final_keys),
+            key=lambda key: donor.final_keys.index(key),
+        )
     )
+    final_section_keys_in_donor_order = [
+        k if k in fixed_final_keys else next(final_section_keys_ordered_iterator)
+        for k in final_section_keys
+    ]
     child_final_keys[
         final_section_start : final_section_start + final_section_length
     ] = final_section_keys_in_donor_order
@@ -144,18 +155,23 @@ def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
     )
 
 
-def reproduction(pool: list[Chromosome]):
+def reproduction(
+    pool: list[Chromosome], fixed_final_keys: set[Key]
+) -> list[Chromosome]:
     parents = pool[:2000]
     for i, receiver in enumerate(parents):
         for _ in range(10):
             donor = random_choice_except_index(parents, i)
-            child = crossover(receiver, donor)
+            child = crossover(receiver, donor, fixed_final_keys)
             pool.append(child)
     # print("len(pool): ", len(pool))
     return pool
 
 
 def genetic_algorithm():
+    fixed_final_keys = get_fixed_final_keys(
+        xiaohe_config.final_layout, xiaohe_config.variant_to_standard_finals
+    )
     pool = initialization()
     for i in range(100):
         print(i, score_chromosome(pool[0]))
@@ -163,7 +179,7 @@ def genetic_algorithm():
 
         pool = evaluation(pool)
         pool = selection(pool)
-        pool = reproduction(pool)
+        pool = reproduction(pool, fixed_final_keys)
     return pool[0]
 
 
