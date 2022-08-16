@@ -177,6 +177,35 @@ class ShuangpinConfig:
     variant_to_standard_finals: dict[str, str]
 
 
+@dataclass
+class Scores:
+    tapping_workload_distribution: float
+    hand_alternation: float
+    finger_alternation: float
+    avoidance_of_big_steps: float
+    hit_direction: float
+
+    def __add__(self, other):
+        return Scores(
+            tapping_workload_distribution=self.tapping_workload_distribution
+            + other.tapping_workload_distribution,
+            hand_alternation=self.hand_alternation + other.hand_alternation,
+            finger_alternation=self.finger_alternation + other.finger_alternation,
+            avoidance_of_big_steps=self.avoidance_of_big_steps
+            + other.avoidance_of_big_steps,
+            hit_direction=self.hit_direction + other.hit_direction,
+        )
+
+    def __truediv__(self, other):
+        return Scores(
+            tapping_workload_distribution=self.tapping_workload_distribution / other,
+            hand_alternation=self.hand_alternation / other,
+            finger_alternation=self.finger_alternation / other,
+            avoidance_of_big_steps=self.avoidance_of_big_steps / other,
+            hit_direction=self.hit_direction / other,
+        )
+
+
 digraph_initials: list[str] = ["zh", "ch", "sh"]
 
 
@@ -577,6 +606,29 @@ def get_random_config() -> ShuangpinConfig:
 def get_score(
     config: ShuangpinConfig,
 ) -> float:
+    scores = get_scores(config)
+    # Generated using get_average_scores(4000)
+    average_scores = Scores(
+        tapping_workload_distribution=0.025301075426633263,
+        hand_alternation=0.5841655834657751,
+        finger_alternation=0.5459557691028307,
+        avoidance_of_big_steps=1.6827515700073905,
+        hit_direction=0.12495240024105278,
+    )
+    return (
+        scores.tapping_workload_distribution
+        / average_scores.tapping_workload_distribution
+        * 0.45
+        + scores.hand_alternation / average_scores.hand_alternation * 1.0
+        + scores.finger_alternation / average_scores.finger_alternation * 0.8
+        + scores.avoidance_of_big_steps / average_scores.avoidance_of_big_steps * 0.7
+        + scores.hit_direction / average_scores.hit_direction * 0.6
+    )
+
+
+def get_scores(
+    config: ShuangpinConfig,
+) -> Scores:
     def get_standard_final(final: str) -> str:
         return config.variant_to_standard_finals.get(final, final)
 
@@ -610,7 +662,7 @@ def get_score(
                 pair_key_freqs.get(standard_pair, 0) + variant_freq
             )
 
-    def workload_distribution() -> float:
+    def tapping_workload_distribution() -> float:
         key_freqs: dict[Key, float] = dict()
         for i, freq in single_key_freqs.items():
             if is_zero_consonant_final(i):
@@ -660,7 +712,7 @@ def get_score(
                 )
         return I3 / 100
 
-    def big_steps() -> float:
+    def avoidance_of_big_steps() -> float:
         I4 = 0.0
         for (i, j) in pair_key_freqs:
             i_key = get_key(i, Choice.RIGHT)
@@ -694,17 +746,31 @@ def get_score(
                 I5 += single_key_freqs.get(final, 0)
         return I5 / 100
 
-    return (
-        workload_distribution() * 0.45
-        + hand_alternation() * 1.0
-        + finger_alternation() * 0.8
-        + big_steps() * 0.7
-        + hit_direction() * 0.6
+    return Scores(
+        tapping_workload_distribution=tapping_workload_distribution(),
+        hand_alternation=hand_alternation(),
+        finger_alternation=finger_alternation(),
+        avoidance_of_big_steps=avoidance_of_big_steps(),
+        hit_direction=hit_direction(),
     )
 
 
-print("xiaohe score = {}".format(get_score(xiaohe_config)))
-print("ziranma score = {}".format(get_score(ziranma_config)))
-print("intelligent ABC score = {}".format(get_score(intelligent_abc_config)))
-print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia_config)))
-print("foxi score = {}".format(get_score(foxi_config)))
+def get_average_scores(num_of_random_scores: int) -> Scores:
+    total_scores = Scores(0, 0, 0, 0, 0)
+    for _ in range(num_of_random_scores):
+        total_scores += get_scores(get_random_config())
+    return total_scores / num_of_random_scores
+
+
+# print(get_average_scores(4000))
+
+
+def print_comparison():
+    print("xiaohe score = {}".format(get_score(xiaohe_config)))
+    print("ziranma score = {}".format(get_score(ziranma_config)))
+    print("intelligent ABC score = {}".format(get_score(intelligent_abc_config)))
+    print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia_config)))
+    print("foxi score = {}".format(get_score(foxi_config)))
+
+
+# print_comparison()
