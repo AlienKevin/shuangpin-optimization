@@ -96,6 +96,10 @@ def strip_zero_consonant_final_tag(final: str) -> str:
     return final[:-1]
 
 
+def add_zero_consonant_final_tag(final: str) -> str:
+    return final + "F"
+
+
 class Finger(IntEnum):
     INDEX = 0
     MIDDLE = 1
@@ -691,7 +695,7 @@ def get_scores(
         # add zero-consonant hand alternations
         for final, key_pair in config.zero_consonant_final_layout.items():
             if is_same_hand(key_pair[0], key_pair[1]):
-                I2 += single_key_freqs.get(final, 0)
+                I2 += single_key_freqs.get(add_zero_consonant_final_tag(final), 0)
         return I2 / 100
 
     def finger_alternation() -> float:
@@ -707,9 +711,9 @@ def get_scores(
             if is_same_hand(key_pair[0], key_pair[1]) and is_same_finger(
                 key_pair[0], key_pair[1]
             ):
-                I3 += single_key_freqs.get(final, 0) * distance(
-                    key_pair[0], key_pair[1]
-                )
+                I3 += single_key_freqs.get(
+                    add_zero_consonant_final_tag(final), 0
+                ) * distance(key_pair[0], key_pair[1])
         return I3 / 100
 
     def avoidance_of_big_steps() -> float:
@@ -723,9 +727,9 @@ def get_scores(
         # add zero-consonant finger alternations
         for final, key_pair in config.zero_consonant_final_layout.items():
             if is_same_hand(key_pair[0], key_pair[1]):
-                I4 += single_key_freqs.get(final, 0) * get_big_step_penalty(
-                    key_pair[0], key_pair[1]
-                )
+                I4 += single_key_freqs.get(
+                    add_zero_consonant_final_tag(final), 0
+                ) * get_big_step_penalty(key_pair[0], key_pair[1])
         return I4 / 100
 
     def hit_direction() -> float:
@@ -743,7 +747,7 @@ def get_scores(
             if is_same_hand(
                 key_pair[0], key_pair[1]
             ) and not is_preferred_hit_direction(key_pair[0], key_pair[1]):
-                I5 += single_key_freqs.get(final, 0)
+                I5 += single_key_freqs.get(add_zero_consonant_final_tag(final), 0)
         return I5 / 100
 
     return Scores(
