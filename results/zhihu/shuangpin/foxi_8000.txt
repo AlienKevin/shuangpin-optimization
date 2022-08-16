@@ -1,0 +1,8 @@
+2.678979392152246
+iu	in	e	un	ua	ong	u	i	uo	ang
+a	uai	ao	ou	uan	eng	ian	an	ai
+iao	ue	uang	ui	ie	ei	en
+
+zh:e	ch:a	sh:v
+
+a:ak	e:ek	o:os	ai:ai	ei:ei	ou:ou	an:an	en:en	ang:av	eng:eo	ao:ao	er:er

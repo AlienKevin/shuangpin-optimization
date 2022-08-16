@@ -279,28 +279,28 @@ xiaohe_config = ShuangpinConfig(
 ### Foxi Shuangpin (佛系双拼) configurations
 foxi_config = ShuangpinConfig(
     final_layout={
-        "in": "q",
-        "un": "w",
-        "ua": "r",
-        "iu": "t",
+        "iu": "q",
+        "in": "w",
+        "un": "r",
+        "ua": "t",
         "ong": "y",
         "uo": "o",
         "ang": "p",
-        "ue": "s",
+        "uai": "s",
         "ao": "d",
         "ou": "f",
         "uan": "g",
-        "an": "h",
-        "en": "j",
-        "ian": "k",
+        "eng": "h",
+        "ian": "j",
+        "an": "k",
         "ai": "l",
-        "uang": "z",
-        "uai": "x",
-        "ie": "c",
+        "iao": "z",
+        "ue": "x",
+        "uang": "c",
         "ui": "v",
-        "iao": "b",
-        "eng": "n",
-        "ei": "m",
+        "ie": "b",
+        "ei": "n",
+        "en": "m",
     },
     # keys must be in the order of the digraph_initials list
     digraph_initial_layout={
@@ -309,16 +309,20 @@ foxi_config = ShuangpinConfig(
         "sh": "v",
     },
     zero_consonant_final_layout={
-        "a": ("a", "h"),
-        "e": ("e", "j"),
-        "o": ("o", "h"),
+        "a": ("a", "k"),
+        "e": ("e", "k"),
+        "o": ("o", "s"),
         "ai": ("a", "i"),
         "ei": ("e", "i"),
         "ou": ("o", "u"),
         "an": ("a", "n"),
         "en": ("e", "n"),
-        "ang": ("a", "p"),
-        "eng": ("e", "k"),
+        "ang": ("a", "j"),
+        # Generated config is ("e", "o")
+        # but since "eng" practically never occurs in the corpus
+        # this is a random assignment
+        # we changed the layout to align with ang
+        "eng": ("e", "j"),
         "ao": ("a", "o"),
         "er": ("e", "r"),
     },
@@ -777,4 +781,4 @@ def print_comparison():
     print("foxi score = {}".format(get_score(foxi_config)))
 
 
-# print_comparison()
+print_comparison()
