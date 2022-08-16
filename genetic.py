@@ -131,9 +131,13 @@ def score_chromosome(chromosome: Chromosome) -> float:
     )
 
 
+# must be divisible by 2
+initial_pool_size = 4000
+
+
 # Generate 2,000 random candidate chromosomes
 def initialization():
-    return [get_random_chromosome() for _ in range(4000)]
+    return [get_random_chromosome() for _ in range(initial_pool_size)]
 
 
 # Evaluate each candidate layout and sort them in ascending order
@@ -145,7 +149,9 @@ def evaluation(pool: list[Chromosome]):
 # Select the 1,000 best chromosomes from the sorted chromosome pool
 # and add 1,000 new random chromosomes to the pool
 def selection(pool: list[Chromosome]):
-    return pool[:2000] + [get_random_chromosome() for _ in range(2000)]
+    return pool[: initial_pool_size // 2] + [
+        get_random_chromosome() for _ in range(initial_pool_size // 2)
+    ]
 
 
 def crossover(
@@ -210,7 +216,7 @@ def crossover(
 def reproduction(
     pool: list[Chromosome], fixed_final_keys: set[Key]
 ) -> list[Chromosome]:
-    parents = pool[:2000]
+    parents = pool[:8000]
     for i, receiver in enumerate(parents):
         for _ in range(10):
             donor = random_choice_except_index(parents, i)
