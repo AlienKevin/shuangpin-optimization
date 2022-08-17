@@ -5,7 +5,8 @@ from shuangpin_configs import (
     intelligent_abc,
     pinyin_jiajia,
     guobiao,
-    foxi,
+    foxi_1,
+    foxi_2,
 )
 
 
@@ -15,7 +16,8 @@ def print_comparison():
     print("intelligent ABC score = {}".format(get_score(intelligent_abc.config)))
     print("pinyin jiajia score = {}".format(get_score(pinyin_jiajia.config)))
     print("guobiao score = {}".format(get_score(guobiao.config)))
-    print("foxi score = {}".format(get_score(foxi.config)))
+    print("foxi 1 score = {}".format(get_score(foxi_1.config)))
+    print("foxi 2 score = {}".format(get_score(foxi_2.config)))
 
 
 print_comparison()
