@@ -1,16 +1,19 @@
 from shuangpin import (
+    ShuangpinConfig,
     get_random_digraph_initial_layout,
     get_random_final_layout,
     get_random_zero_consonant_final_layout,
     get_score,
-    xiaohe_config,
     qwerty_layout,
     digraph_initials,
     Key,
     get_fixed_final_keys,
+    finals,
+    zero_consonant_finals,
+    default_variant_to_standard_finals,
 )
 import random
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from utils import random_choice_except_index
 
 
@@ -21,14 +24,18 @@ class Chromosome:
     zero_consonant_final_keys: list[tuple[str, str]]
 
 
-def final_keys_to_layout(keys: list[str]) -> dict[str, str]:
-    return {final: keys[i] for i, final in enumerate(xiaohe_config.final_layout.keys())}
+def final_keys_to_layout(
+    keys: list[str], variant_to_standard_finals: dict[str, str]
+) -> dict[str, str]:
+    standard_finals = [
+        final for final in finals if final not in variant_to_standard_finals.keys()
+    ]
+    return {final: keys[i] for i, final in enumerate(standard_finals)}
 
 
 def digraph_initial_keys_to_layout(keys: list[str]) -> dict[str, str]:
     return {
-        digraph_initial: keys[i]
-        for i, digraph_initial in enumerate(xiaohe_config.digraph_initial_layout.keys())
+        digraph_initial: keys[i] for i, digraph_initial in enumerate(digraph_initials)
     }
 
 
@@ -37,14 +44,12 @@ def zero_consonant_final_keys_to_layout(
 ) -> dict[str, tuple[str, str]]:
     return {
         zero_consonant_final: keys[i]
-        for i, zero_consonant_final in enumerate(
-            xiaohe_config.zero_consonant_final_layout.keys()
-        )
+        for i, zero_consonant_final in enumerate(zero_consonant_finals)
     }
 
 
 def print_final_keys(final_keys: list[str]):
-    final_layout = final_keys_to_layout(final_keys)
+    final_layout = final_keys_to_layout(final_keys, default_variant_to_standard_finals)
     # Add the keys not mapped to any final
     for key in qwerty_layout.keys():
         if key not in final_keys:
@@ -103,30 +108,28 @@ def print_chromosome(chromosome: Chromosome):
 def get_random_chromosome():
     return Chromosome(
         final_keys=list(
-            get_random_final_layout(
-                xiaohe_config.final_layout, xiaohe_config.variant_to_standard_finals
-            ).values()
+            get_random_final_layout(default_variant_to_standard_finals).values()
         ),
         digraph_initial_keys=list(get_random_digraph_initial_layout().values()),
         zero_consonant_final_keys=list(
-            get_random_zero_consonant_final_layout(
-                xiaohe_config.zero_consonant_final_layout
-            ).values()
+            get_random_zero_consonant_final_layout().values()
         ),
     )
 
 
 def score_chromosome(chromosome: Chromosome) -> float:
     return get_score(
-        replace(
-            xiaohe_config,
-            final_layout=final_keys_to_layout(chromosome.final_keys),
+        ShuangpinConfig(
+            final_layout=final_keys_to_layout(
+                chromosome.final_keys, default_variant_to_standard_finals
+            ),
             digraph_initial_layout=digraph_initial_keys_to_layout(
                 chromosome.digraph_initial_keys
             ),
             zero_consonant_final_layout=zero_consonant_final_keys_to_layout(
                 chromosome.zero_consonant_final_keys
             ),
+            variant_to_standard_finals=default_variant_to_standard_finals,
         )
     )
 
@@ -227,9 +230,7 @@ def reproduction(
 
 
 def genetic_algorithm():
-    fixed_final_keys = get_fixed_final_keys(
-        xiaohe_config.final_layout, xiaohe_config.variant_to_standard_finals
-    )
+    fixed_final_keys = get_fixed_final_keys(default_variant_to_standard_finals)
     pool = initialization()
     for i in range(100):
         print(i, score_chromosome(pool[0]))

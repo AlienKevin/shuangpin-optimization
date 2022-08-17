@@ -15,7 +15,7 @@ initial_regex = re.compile("(ch|zh|sh|r|c|b|d|g|f|h|k|j|m|l|n|q|p|s|t|w|y|x|z)")
 
 
 SingleFreqs: TypeAlias = dict[str, int]
-PairFreqs: TypeAlias = dict[(str, str), int]
+PairFreqs: TypeAlias = dict[tuple[str, str], int]
 
 
 @dataclass
@@ -169,12 +169,12 @@ def union_add(dict1: dict, dict2: dict):
     return {x: dict1.get(x, 0) + dict2.get(x, 0) for x in set(dict1).union(dict2)}
 
 
-def serialize_freqs(freqs: Freqs):
-    serialize_single_freqs(freqs.single_freqs)
-    serialize_pair_freqs(freqs.pair_freqs)
+def serialize_freqs(source_type: str, freqs: Freqs):
+    serialize_single_freqs(source_type, freqs.single_freqs)
+    serialize_pair_freqs(source_type, freqs.pair_freqs)
 
 
-def serialize_single_freqs(freqs: SingleFreqs):
+def serialize_single_freqs(source_type: str, freqs: SingleFreqs):
     total_count = sum(freqs.values())
     outputs = dict()
     for (key, count) in sorted(freqs.items(), key=lambda x: x[1], reverse=True):
@@ -183,11 +183,13 @@ def serialize_single_freqs(freqs: SingleFreqs):
             print(key + "\t" + "{:.0f}".format(percent))
             outputs[key] = percent
     print()
-    with open("single_freqs.json", "w+") as outfile:
+    with open(
+        "../results/frequencies/{}/single_freqs.json".format(source_type), "w+"
+    ) as outfile:
         json.dump(outputs, outfile)
 
 
-def serialize_pair_freqs(freqs: PairFreqs):
+def serialize_pair_freqs(source_type: str, freqs: PairFreqs):
     total_count = sum(freqs.values())
     outputs = dict()
     for (key, count) in sorted(freqs.items(), key=lambda x: x[1], reverse=True):
@@ -199,13 +201,15 @@ def serialize_pair_freqs(freqs: PairFreqs):
             )
             outputs[key[0] + "+" + key[1]] = percent
     print()
-    with open("pair_freqs.json", "w+") as outfile:
+    with open(
+        "../results/frequencies/{}/pair_freqs.json".format(source_type), "w+"
+    ) as outfile:
         json.dump(outputs, outfile)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Compute the Freqs of Pinyin initials and finals."
+        description="Compute the frequencies of Pinyin initials and finals."
     )
     parser.add_argument(
         "source_type",
@@ -231,13 +235,13 @@ if __name__ == "__main__":
     file_name = ""
     fields = []
     if source_type == "zhihu":
-        file_name = "./data/zhihu/web_text_zh_{}.json".format(source_set)
+        file_name = "../data/zhihu/web_text_zh_{}.json".format(source_set)
         fields = ["title", "desc", "content"]
     elif source_type == "news":
-        file_name = "./data/news/news2016zh_{}.json".format(source_set)
+        file_name = "../data/news/news2016zh_{}.json".format(source_set)
         fields = ["title", "content"]
     elif source_type == "baike":
-        file_name = "./data/baike/baike_qa_{}.json".format(source_set)
+        file_name = "../data/baike/baike_qa_{}.json".format(source_set)
         fields = ["title", "answer"]
     print(
         "Processing the {} set of {} with fields {}".format(
@@ -245,4 +249,4 @@ if __name__ == "__main__":
         )
     )
     freqs = measure(parallel_read, file_name, fields)
-    serialize_freqs(freqs)
+    serialize_freqs(source_type, freqs)
