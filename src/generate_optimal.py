@@ -2,15 +2,14 @@ from shuangpin import (
     ShuangpinConfig,
     get_random_digraph_initial_layout,
     get_random_final_layout,
+    get_random_variant_to_standard_finals,
     get_random_zero_consonant_final_layout,
     get_score,
     qwerty_layout,
     digraph_initials,
-    Key,
-    get_fixed_final_keys,
+    fixed_finals_to_keys,
     finals,
     zero_consonant_finals,
-    default_variant_to_standard_finals,
 )
 import random
 from dataclasses import dataclass
@@ -22,6 +21,7 @@ class Chromosome:
     final_keys: list[str]
     digraph_initial_keys: list[str]
     zero_consonant_final_keys: list[tuple[str, str]]
+    variant_to_standard_finals: dict[str, str]
 
 
 def final_keys_to_layout(
@@ -48,8 +48,8 @@ def zero_consonant_final_keys_to_layout(
     }
 
 
-def print_final_keys(final_keys: list[str]):
-    final_layout = final_keys_to_layout(final_keys, default_variant_to_standard_finals)
+def print_final_keys(final_keys: list[str], variant_to_standard_finals: dict[str, str]):
+    final_layout = final_keys_to_layout(final_keys, variant_to_standard_finals)
     # Add the keys not mapped to any final
     for key in qwerty_layout.keys():
         if key not in final_keys:
@@ -96,24 +96,36 @@ def print_zero_consonant_final_keys(zero_consonant_final_keys: list[tuple[str, s
     )
 
 
+def print_variant_to_standard_finals(variant_to_standard_finals: dict[str, str]):
+    print(
+        "\t".join(
+            map(
+                lambda item: item[0] + ":" + item[1], variant_to_standard_finals.items()
+            )
+        )
+    )
+
+
 def print_chromosome(chromosome: Chromosome):
-    print_final_keys(chromosome.final_keys)
+    print_final_keys(chromosome.final_keys, chromosome.variant_to_standard_finals)
     print()
     print_digraph_initial_keys(chromosome.digraph_initial_keys)
     print()
     print_zero_consonant_final_keys(chromosome.zero_consonant_final_keys)
+    print()
+    print_variant_to_standard_finals(chromosome.variant_to_standard_finals)
     print("\n" + "-" * 30 + "\n", flush=True)
 
 
 def get_random_chromosome():
+    variant_to_standard_finals = get_random_variant_to_standard_finals()
     return Chromosome(
-        final_keys=list(
-            get_random_final_layout(default_variant_to_standard_finals).values()
-        ),
+        final_keys=list(get_random_final_layout(variant_to_standard_finals).values()),
         digraph_initial_keys=list(get_random_digraph_initial_layout().values()),
         zero_consonant_final_keys=list(
             get_random_zero_consonant_final_layout().values()
         ),
+        variant_to_standard_finals=variant_to_standard_finals,
     )
 
 
@@ -121,7 +133,7 @@ def score_chromosome(chromosome: Chromosome) -> float:
     return get_score(
         ShuangpinConfig(
             final_layout=final_keys_to_layout(
-                chromosome.final_keys, default_variant_to_standard_finals
+                chromosome.final_keys, chromosome.variant_to_standard_finals
             ),
             digraph_initial_layout=digraph_initial_keys_to_layout(
                 chromosome.digraph_initial_keys
@@ -129,13 +141,13 @@ def score_chromosome(chromosome: Chromosome) -> float:
             zero_consonant_final_layout=zero_consonant_final_keys_to_layout(
                 chromosome.zero_consonant_final_keys
             ),
-            variant_to_standard_finals=default_variant_to_standard_finals,
+            variant_to_standard_finals=chromosome.variant_to_standard_finals,
         )
     )
 
 
 # must be divisible by 2
-initial_pool_size = 4000
+initial_pool_size = 16000
 
 
 # Generate 2,000 random candidate chromosomes
@@ -157,9 +169,49 @@ def selection(pool: list[Chromosome]):
     ]
 
 
-def crossover(
-    receiver: Chromosome, donor: Chromosome, fixed_final_keys: set[Key]
-) -> Chromosome:
+def get_key_by_value(dictionary: dict, value):
+    return next(key for key, val in dictionary.items() if val == value)
+
+
+def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
+    # randomly replace one of receiver's variant to standard mapping
+    # with the donor's mapping
+    # if a fixed variant to standard mapping is chosen, the child's
+    # mappings is not mutated
+    child_variant_to_standard_finals = receiver.variant_to_standard_finals.copy()
+    donor_variant = random.choice(list(donor.variant_to_standard_finals.keys()))
+    donor_standard = donor.variant_to_standard_finals[donor_variant]
+    if (donor_variant, donor_standard) in child_variant_to_standard_finals.items():
+        # Mapping already exists in the receiver. Do nothing.
+        pass
+    elif donor_variant in child_variant_to_standard_finals.keys():
+        if donor_standard in child_variant_to_standard_finals.values():
+            receiver_variant = get_key_by_value(
+                receiver.variant_to_standard_finals, donor_standard
+            )
+            # swap the mapping
+            (
+                child_variant_to_standard_finals[donor_variant],
+                child_variant_to_standard_finals[receiver_variant],
+            ) = (
+                child_variant_to_standard_finals[receiver_variant],
+                child_variant_to_standard_finals[donor_variant],
+            )
+        else:
+            child_variant_to_standard_finals[donor_variant] = donor_standard
+    elif donor_standard in child_variant_to_standard_finals.values():
+        receiver_variant = get_key_by_value(
+            receiver.variant_to_standard_finals, donor_standard
+        )
+        del child_variant_to_standard_finals[receiver_variant]
+        child_variant_to_standard_finals[donor_variant] = donor_standard
+    else:
+        # impossible
+        raise Exception("impossible combination of variant and standard finals")
+    # print("donor:", donor.variant_to_standard_finals)
+    # print("receiver:", receiver.variant_to_standard_finals)
+    # print("child:", child_variant_to_standard_finals)
+
     # crossover finals
     final_section_length = random.randint(2, 5)
     final_section_start = random.randint(
@@ -171,12 +223,14 @@ def crossover(
     child_final_keys = receiver.final_keys.copy()
     final_section_keys_ordered_iterator = iter(
         sorted(
-            (k for k in final_section_keys if k not in fixed_final_keys),
+            (k for k in final_section_keys if k not in fixed_finals_to_keys.values()),
             key=lambda key: donor.final_keys.index(key),
         )
     )
     final_section_keys_in_donor_order = [
-        k if k in fixed_final_keys else next(final_section_keys_ordered_iterator)
+        k
+        if k in fixed_finals_to_keys.values()
+        else next(final_section_keys_ordered_iterator)
         for k in final_section_keys
     ]
     child_final_keys[
@@ -213,24 +267,22 @@ def crossover(
         final_keys=child_final_keys,
         digraph_initial_keys=child_digraph_initial_keys,
         zero_consonant_final_keys=child_zero_consonant_final_keys,
+        variant_to_standard_finals=child_variant_to_standard_finals,
     )
 
 
-def reproduction(
-    pool: list[Chromosome], fixed_final_keys: set[Key]
-) -> list[Chromosome]:
+def reproduction(pool: list[Chromosome]) -> list[Chromosome]:
     parents = pool[:8000]
     for i, receiver in enumerate(parents):
         for _ in range(10):
             donor = random_choice_except_index(parents, i)
-            child = crossover(receiver, donor, fixed_final_keys)
+            child = crossover(receiver, donor)
             pool.append(child)
     # print("len(pool): ", len(pool))
     return pool
 
 
 def genetic_algorithm():
-    fixed_final_keys = get_fixed_final_keys(default_variant_to_standard_finals)
     pool = initialization()
     for i in range(100):
         print(i, score_chromosome(pool[0]))
@@ -238,7 +290,7 @@ def genetic_algorithm():
 
         pool = evaluation(pool)
         pool = selection(pool)
-        pool = reproduction(pool, fixed_final_keys)
+        pool = reproduction(pool)
     return pool[0]
 
 

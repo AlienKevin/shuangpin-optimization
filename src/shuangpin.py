@@ -3,6 +3,7 @@ from enum import Enum, IntEnum
 from dataclasses import dataclass
 import random
 from itertools import product
+from final_groups import only_jqx_final, no_jqx_group, only_gkh_group, no_gkh_group
 
 # first: 0 = left hand, 1 = right hand
 # second: 1 = index finger, 2 = index finger, 3 = middle finger, 4 = ring finger, 5 = little finger
@@ -226,24 +227,18 @@ default_variant_to_standard_finals: dict[str, str] = {
     "v": "ui",
 }
 
+fixed_variant_to_standard_finals: dict[str, str] = {
+    "ve": "ue",
+    "o": "uo",
+    "v": "ui",
+}
+
 
 digraph_initials: list[str] = ["zh", "ch", "sh"]
 
 
 def is_digraph_initial(initial: str) -> bool:
     return initial in digraph_initials
-
-
-def get_fixed_final_keys(variant_to_standard_finals: dict[str, str]) -> set[Key]:
-    standard_to_variant_finals = {v: k for k, v in variant_to_standard_finals.items()}
-    fixed_final_keys = set()
-    for standard_final in finals - variant_to_standard_finals.keys():
-        if standard_final in fixed_finals:
-            fixed_final_keys.add(standard_final)
-        elif standard_to_variant_finals.get(standard_final) in fixed_finals:
-            variant_final = standard_to_variant_finals[standard_final]
-            fixed_final_keys.add(variant_final)
-    return fixed_final_keys
 
 
 fixed_finals: list[str] = ["a", "e", "i", "o", "u", "v"]
@@ -379,7 +374,22 @@ def get_random_zero_consonant_final_layout() -> dict[str, tuple[str, str]]:
 # print(get_random_zero_consonant_final_layout())
 
 
-def get_random_config(variant_to_standard_finals: dict[str, str]) -> ShuangpinConfig:
+def get_random_variant_to_standard_finals() -> dict[str, str]:
+    mapping = fixed_variant_to_standard_finals.copy()
+    mapping[only_jqx_final] = random.choice(list(no_jqx_group))
+    no_gkh_finals = list(no_gkh_group)
+    for only_gkh_final in only_gkh_group:
+        no_gkh_final = random.choice(no_gkh_finals)
+        mapping[only_gkh_final] = no_gkh_final
+        no_gkh_finals.remove(no_gkh_final)
+    return mapping
+
+
+# print(get_random_variant_to_standard_finals())
+
+
+def get_random_config() -> ShuangpinConfig:
+    variant_to_standard_finals = get_random_variant_to_standard_finals()
     return ShuangpinConfig(
         final_layout=get_random_final_layout(variant_to_standard_finals),
         digraph_initial_layout=get_random_digraph_initial_layout(),
@@ -543,9 +553,7 @@ def get_scores(
 def get_average_scores(num_of_random_scores: int) -> Scores:
     total_scores = Scores(0, 0, 0, 0, 0)
     for _ in range(num_of_random_scores):
-        total_scores += get_scores(
-            get_random_config(default_variant_to_standard_finals)
-        )
+        total_scores += get_scores(get_random_config())
     return total_scores / num_of_random_scores
 
 
