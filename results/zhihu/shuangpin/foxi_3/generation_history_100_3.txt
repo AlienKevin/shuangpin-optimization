@@ -1,0 +1,896 @@
+0 3.2373718861385345
+ian     ong     e       ie      ao      ue      u       i       uo      in
+a       an      uan     un      iang    ai      ei      iu      ang
+ou      ing     en      ui      iao     ia      eng
+
+zh:i    ch:e    sh:o
+
+a:ag    e:ey    o:ox    ang:al  eng:ep  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:iu ua:in   uai:ian
+
+------------------------------
+
+1 2.9698976257404466
+in      ing     e       iao     iu      ang     u       i       uo      en
+a       ai      ou      uan     ei      un      ong     eng     ie
+an      iang    ian     ui      ue      ia      ao
+
+zh:o    ch:a    sh:v
+
+a:ag    e:eq    o:oc    ang:ae  eng:es  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:a  uang:ie ua:i    uai:in
+
+------------------------------
+
+2 2.9234586257671054
+iang    ian     e       ing     ue      ao      u       i       uo      eng
+a       ei      iu      an      iao     ong     un      en      ai
+uan     ia      in      ui      ie      ang     ou
+
+zh:e    ch:a    sh:v
+
+a:aq    e:eg    o:or    ang:ax  eng:el  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:eng        uang:ing        ua:ia   uai:ie
+
+------------------------------
+
+3 2.895842235481463
+ing     ia      e       ou      uan     ang     u       i       uo      ei
+a       an      ian     ie      iao     in      eng     ao      ai
+un      ue      iu      ui      iang    en      ong
+
+zh:v    ch:u    sh:a
+
+a:ah    e:ev    o:oj    ang:aw  eng:eg  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:a  uang:iang       ua:ie   uai:iao
+
+------------------------------
+
+4 2.87064723944044
+iang    ian     e       ing     iu      ao      u       i       uo      eng
+a       uan     un      an      in      ong     ei      en      ai
+ue      ia      iao     ui      ie      ang     ou
+
+zh:e    ch:a    sh:v
+
+a:aq    e:eg    o:oc    ang:af  eng:el  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:a  uang:ing        ua:ia   uai:ie
+
+------------------------------
+
+5 2.8365536458060157
+ing     ia      e       in      uan     ang     u       i       uo      ei
+a       ou      ian     ie      iao     an      eng     ao      ai
+un      ue      iu      ui      iang    en      ong
+
+zh:v    ch:u    sh:a
+
+a:ah    e:ev    o:or    ang:ae  eng:eg  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:en uang:ing        ua:ie   uai:iao
+
+------------------------------
+
+6 2.8072063906372797
+in      ei      e       un      iu      ie      u       i       uo      ang
+a       ong     eng     ou      uan     ue      an      ai      ing
+ia      iang    ian     ui      iao     ao      en
+
+zh:e    ch:u    sh:v
+
+a:ab    e:ev    o:ok    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ao uang:ing        ua:iao  uai:iang
+
+------------------------------
+
+7 2.7871454449969306
+in      un      e       ue      iu      ong     u       i       uo      ang
+a       ie      an      ou      ei      uan     en      ai      ian
+iang    iao     ia      ui      ing     ao      eng
+
+zh:e    ch:a    sh:v
+
+a:ax    e:eg    o:oy    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:ia ua:i    uai:iang
+
+------------------------------
+
+8 2.747473608709528
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ie      eng     ou      uan     ue      an      ai      ing
+ia      iang    ian     ui      iao     ao      en
+
+zh:e    ch:a    sh:v
+
+a:au    e:ev    o:oc    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ao uang:i  ua:iao  uai:iang
+
+------------------------------
+
+9 2.732493260239238
+in      un      e       ue      iu      ong     u       i       uo      ang
+a       ie      ou      ao      ei      uan     en      ai      ian
+iang    iao     ing     ui      ia      an      eng
+
+zh:e    ch:a    sh:v
+
+a:ak    e:eo    o:op    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:i  ua:in   uai:iang
+
+------------------------------
+
+10 2.732417837168929
+in      un      e       ue      iu      ong     u       i       uo      ang
+a       ie      ou      ao      ei      uan     en      ai      ian
+iang    iao     ing     ui      ia      an      eng
+
+zh:e    ch:a    sh:v
+
+a:ak    e:eo    o:ok    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:i  ua:in   uai:iang
+
+------------------------------
+
+11 2.731353356034681
+in      un      e       ue      iu      ong     u       i       uo      ang
+a       ie      ou      ao      ei      uan     en      ai      ian
+iang    iao     ing     ui      ia      an      eng
+
+zh:e    ch:a    sh:v
+
+a:ak    e:el    o:op    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:i  ua:in   uai:iao
+
+------------------------------
+
+12 2.7307082309896344
+in      un      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ei      uan     en      ai      ian
+iang    iao     ing     ui      ia      an      eng
+
+zh:e    ch:a    sh:v
+
+a:al    e:eo    o:oq    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:i  ua:iao  uai:iang
+
+------------------------------
+
+13 2.722366555132588
+in      un      e       ie      iu      ong     u       i       uo      ang
+a       ue      ou      ao      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ey    o:ov    ang:ae  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:i  ua:in   uai:iang
+
+------------------------------
+
+14 2.7211993118378044
+in      un      e       ie      iu      ong     u       i       uo      ang
+a       ue      ou      ao      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ey    o:ov    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:i  ua:in   uai:iu
+
+------------------------------
+
+15 2.716961442413367
+in      ue      e       un      iu      ong     u       i       uo      ang
+a       ie      ou      ao      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:eo    o:ok    ang:ax  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:i  ua:ie   uai:iang
+
+------------------------------
+
+16 2.7144479746636745
+in      un      e       ie      iu      ong     u       i       uo      ang
+a       ue      ou      ao      uan     ei      en      ai      ian
+iang    iao     ing     ui      ia      eng     an
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ej    o:oq    ang:aq  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ong        uang:ian        ua:in   uai:ing
+
+------------------------------
+
+17 2.7078037556947887
+in      un      e       ie      iu      ong     u       i       uo      ang
+a       ue      ao      ou      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ey    o:ok    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:ian        ua:in   uai:ing
+
+------------------------------
+
+18 2.7078037556947887
+in      un      e       ie      iu      ong     u       i       uo      ang
+a       ue      ao      ou      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ey    o:ok    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:ian        ua:in   uai:ing
+
+------------------------------
+
+19 2.702023875330607
+in      ue      e       un      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:om    ang:ax  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+20 2.701905623585223
+in      ue      e       un      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:om    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+21 2.7016929942763928
+in      ue      e       un      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:oq    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+22 2.7016283035517805
+in      ue      e       un      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ei      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ang        uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+23 2.6988629305888336
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ue      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:oy    ang:ax  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:eng        uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+24 2.6984735835217744
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ie      ao      ou      ue      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:ax  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:eng        uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+25 2.698064108756783
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:ot    ang:ax  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:an uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+26 2.697417718685844
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+27 2.697417718685844
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+28 2.697417718685844
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:aj  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+29 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+30 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+31 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+32 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+33 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+34 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+35 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+36 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+37 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+38 2.6974081795730718
+in      ei      e       ue      iu      ong     u       i       uo      ang
+a       ie      ao      ou      un      uan     an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+39 2.6972781995309196
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       uan     ao      ou      ue      ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:at  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+40 2.697099208772735
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       uan     ao      ou      ue      ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+41 2.6920529632049592
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:at  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+42 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+43 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+44 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+45 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+46 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+47 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+48 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+49 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+50 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+51 2.691873972446774
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iang    iao     ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+52 2.690742554455217
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:oc    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+53 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+54 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+55 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+56 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+57 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+58 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+59 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+60 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+61 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+62 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+63 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+64 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+65 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+66 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+67 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
+
+68 2.6906611336976676
+in      ei      e       un      iu      ong     u       i       uo      ang
+a       ue      ao      ou      uan     ie      an      ai      ian
+iao     iang    ing     ui      ia      eng     en
+
+zh:e    ch:a    sh:v
+
+a:ak    e:ek    o:os    ang:al  eng:ec  ai:ai   ei:ei   ou:ou   an:an   en:en ao:ao    er:er
+
+ve:ue   o:uo    v:ui    iong:ai uang:ian        ua:ie   uai:ing
+
+------------------------------
