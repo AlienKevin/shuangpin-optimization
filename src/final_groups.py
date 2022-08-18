@@ -1,5 +1,7 @@
 # only_jqx_group can only be paired with no_jqx_group
 
+only_jqx_final = "iong"
+
 no_jqx_group = {
     "a",
     # o must be paired with uo
@@ -31,17 +33,22 @@ no_jqx_group = {
     # ui must be paired with v
     # See no_jqx_nl_group and only_jqx_group for an explanation
     # "ui",
-    "uan",
-    "un",
+    # The below two finals can be abbreviations of van and vn respectively.
+    # van and vn can be paired with jqx
+    # "uan",
+    # "un",
     # can't pair with iong because then iong cannot pair with other finals
     # "uang",
 }
 
-only_jqx_group = {
-    "iong",
-}
-
 # only_jqx_nl_group can only be paired with no_jqx_nl_group
+
+only_jqx_nl_group = {
+    "v",
+    # ve must be paired with ue
+    # some people abbreviate lve as lue and nve as nue
+    # "ve",
+}
 
 no_jqx_nl_group = {
     "ui",
@@ -52,13 +59,6 @@ no_jqx_nl_group = {
     # "uang",
 }
 
-only_jqx_nl_group = {
-    "v",
-    # ve must be paired with ue
-    # some people abbreviate lve as lue and nve as nue
-    # "ve",
-}
-
 # only_gkh_group can only be paired with no_gkh_group
 
 only_gkh_group = {
@@ -67,7 +67,7 @@ only_gkh_group = {
     "uang",  # ignoring the duang neologism
 }
 
-no_ghk_group = {
+no_gkh_group = {
     "i",
     "ia",
     "ie",
