@@ -183,9 +183,9 @@ def serialize_single_freqs(source_type: str, freqs: SingleFreqs):
             print(key + "\t" + "{:.0f}".format(percent))
             outputs[key] = percent
     print()
-    with open(
-        "../results/frequencies/{}/single_freqs.json".format(source_type), "w+"
-    ) as outfile:
+    output_dir = "../results/{}/frequencies".format(source_type)
+    os.makedirs(output_dir, exist_ok=True)
+    with open("{}/single_freqs.json".format(output_dir), "w+") as outfile:
         json.dump(outputs, outfile)
 
 
@@ -201,9 +201,9 @@ def serialize_pair_freqs(source_type: str, freqs: PairFreqs):
             )
             outputs[key[0] + "+" + key[1]] = percent
     print()
-    with open(
-        "../results/frequencies/{}/pair_freqs.json".format(source_type), "w+"
-    ) as outfile:
+    output_dir = "../results/{}/frequencies".format(source_type)
+    os.makedirs(output_dir, exist_ok=True)
+    with open("{}/pair_freqs.json".format(output_dir), "w+") as outfile:
         json.dump(outputs, outfile)
 
 
