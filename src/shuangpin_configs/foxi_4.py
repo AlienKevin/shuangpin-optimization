@@ -28,9 +28,9 @@ config = ShuangpinConfig(
     },
     # keys must be in the order of the digraph_initials list
     digraph_initial_layout={
-        "zh": "e",
-        "ch": "a",
-        "sh": "v",
+        "zh": "v",
+        "ch": "i",
+        "sh": "u",
     },
     zero_consonant_final_layout={
         "a": ("o", "a"),
