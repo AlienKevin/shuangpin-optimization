@@ -38,7 +38,6 @@ engine:
   translators:
     - punct_translator
     - script_translator
-    - script_translator@full_pinyin
   filters:
     - simplifier
     - uniquifier
@@ -49,47 +48,44 @@ speller:
   algebra:  # 拼寫運算規則，這個纔是實現雙拼方案的重點。寫法有很多種，當然也可以把四百多個音節碼一條一條地列舉
     - erase/^xx$/
     - derive/^([jqxy])u$/$1v/
-    - xform/^sh/U/            # 替換聲母鍵，用大寫以防與原有的字母混淆
-    - xform/^ch/I/
-    - xform/^zh/V/
+    - derive/^sh/U/
+    - derive/^ch/I/
+    - derive/^zh/V/
     - xform/^([aoe].*)$/O$1/  # 添上固定的零聲母o，先標記爲大寫O
-    - xform/iu$/Q/
-    - xform/(.)ei$/$1R/
-    - xform/er$|uan$/D/       # 對應兩種韻母的；音節er現在變爲OD了
-    - xform/[uv]e$/C/
-    - xform/un$/T/
-    - xform/uo$/O/
-    - xform/ie$/B/
-    - xform/i?ong$/Y/
-    - xform/ing$|uai$/S/
-    - xform/(.)ai$/$1L/
-    - xform/(.)en$/$1M/
-    - xform/(.)eng$/$1N/
-    - xform/[iu]ang$/Z/
-    - xform/(.)ang$/$1P/
-    - xform/ian$/H/
-    - xform/(.)an$/$1K/
-    - xform/(.)ou$/$1F/
-    - xform/[iu]a$/G/
-    - xform/iao$/X/
-    - xform/(.)ao$/$1J/
-    - xform/ui$/V/
-    - xform/in$/W/
+    - derive/iu$/Q/
+    - derive/(.)ei$/$1R/
+    - derive/er$|uan$/D/       # 對應兩種韻母的；音節er現在變爲OD了
+    - derive/[uv]e$/C/
+    - derive/un$/T/
+    - derive/uo$/O/
+    - derive/ie$/B/
+    - derive/i?ong$/Y/
+    - derive/ing$|uai$/S/
+    - derive/(.)ai$/$1L/
+    - derive/(.)en$/$1M/
+    - derive/(.)eng$/$1N/
+    - derive/[iu]ang$/Z/
+    - derive/(.)ang$/$1P/
+    - derive/ian$/H/
+    - derive/(.)an$/$1K/
+    - derive/(.)ou$/$1F/
+    - derive/[iu]a$/G/
+    - derive/iao$/X/
+    - derive/(.)ao$/$1J/
+    - derive/ui$/V/
+    - derive/in$/W/
     - xlit/QWRTYUIOPSDFGHJKLZXCVBNM/qwrtyuiopsdfghjklzxcvbnm/
 
 translator:
   dictionary: luna_pinyin     # 與【朙月拼音】共用詞典
   prism: double_pinyin_foxi    # prism 要以本輸入方案的名稱來命名，以免把朙月拼音的拼寫映射表覆蓋掉
-  enable_completion: false
-  strict_spelling: true
-  initial_quality: 1
   preedit_format:             # 這段代碼用來將輸入的雙拼碼反轉爲全拼顯示；待見雙拼碼的可以把這段拿掉
     - xform/o(\w)/0$1/        # 零聲母先改爲0，以方便後面的轉換
     - xform/(\w)r/$1ei/       # 雙拼第二碼轉換爲韻母
     - xform/([gkhvuirzcs])g/$1ua/ # 提前轉換雙拼碼 n 和 g，因爲轉換後的拼音裏就快要出現這兩個字母了，那時將難以分辨出雙拼碼
-    - xform/(\w)g/$1ia/           # 當然也可以採取事先將雙拼碼變爲大寫的辦法來與轉換過的拼音做區分，可誰讓我是高手呢
-    - xform/(\w)n/$1eng/
-    - xform/(\w)h/$1ian/
+    - xform/([dljqx])g/$1ia/           # 只有前面是能够相匹配聲母的時候才識別爲雙拼韻母
+    - xform/([bpmfdtnlgkh])n/$1eng/     # 只有前面是能够相匹配聲母的時候才識別爲雙拼韻母
+    - xform/([qtypdjlxbnm])h/$1ian/     # 保留zh, ch, sh
     - xform/(\w)t/$1un/
     - xform/([dtnljqx])d/$1uan/  # 對應多種韻母的雙拼碼，按搭配的聲母做區分（最好別用排除式如 [^o]q 容易出狀況）
     - xform/0d/0er/             # 另一種情況，注意先不消除0，以防後面把e當作聲母轉換爲ch
@@ -121,15 +117,6 @@ translator:
     - xform/([nl])ue/$1üe/
     - xform/([jqxy])v/$1u/
 
-full_pinyin:
-  dictionary: luna_pinyin
-  prism: luna_pinyin
-  enable_completion: false
-  initial_quality: 0.3
-  preedit_format:
-    - xform/([nl])v/$1ü/
-    - xform/([nl])ue/$1üe/
-    - xform/([jqxy])v/$1u/
 
 punctuator:
   import_preset: default
