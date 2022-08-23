@@ -48,10 +48,10 @@ speller:
   algebra:  # 拼寫運算規則，這個纔是實現雙拼方案的重點。寫法有很多種，當然也可以把四百多個音節碼一條一條地列舉
     - erase/^xx$/
     - derive/^([jqxy])u$/$1v/
-    - derive/^sh/U/
-    - derive/^ch/I/
-    - derive/^zh/V/
-    - xform/^([aoe].*)$/O$1/  # 添上固定的零聲母o，先標記爲大寫O
+    # - derive/^sh/U/
+    # - derive/^ch/I/
+    # - derive/^zh/V/
+    # - derive/^([aoe].*)$/O$1/  # 添上固定的零聲母o，先標記爲大寫O
     - derive/iu$/Q/
     - derive/(.)ei$/$1R/
     - derive/er$|uan$/D/       # 對應兩種韻母的；音節er現在變爲OD了
@@ -79,43 +79,44 @@ speller:
 translator:
   dictionary: luna_pinyin     # 與【朙月拼音】共用詞典
   prism: double_pinyin_foxi    # prism 要以本輸入方案的名稱來命名，以免把朙月拼音的拼寫映射表覆蓋掉
+  enable_user_dict: true
   preedit_format:             # 這段代碼用來將輸入的雙拼碼反轉爲全拼顯示；待見雙拼碼的可以把這段拿掉
-    - xform/o(\w)/0$1/        # 零聲母先改爲0，以方便後面的轉換
-    - xform/(\w)r/$1ei/       # 雙拼第二碼轉換爲韻母
-    - xform/([gkhvuirzcs])g/$1ua/ # 提前轉換雙拼碼 n 和 g，因爲轉換後的拼音裏就快要出現這兩個字母了，那時將難以分辨出雙拼碼
-    - xform/([dljqx])g/$1ia/           # 只有前面是能够相匹配聲母的時候才識別爲雙拼韻母
-    - xform/([bpmfdtnlgkh])n/$1eng/     # 只有前面是能够相匹配聲母的時候才識別爲雙拼韻母
-    - xform/([qtypdjlxbnm])h/$1ian/     # 保留zh, ch, sh
-    - xform/(\w)t/$1un/
-    - xform/([dtnljqx])d/$1uan/  # 對應多種韻母的雙拼碼，按搭配的聲母做區分（最好別用排除式如 [^o]q 容易出狀況）
-    - xform/0d/0er/             # 另一種情況，注意先不消除0，以防後面把e當作聲母轉換爲ch
-    - xform/([nljqx])z/$1iang/
-    - xform/(\w)z/$1uang/       # 上一行已經把對應到 iang 的雙拼碼 t 消滅，於是這裏不用再列舉相配的聲母
-    - xform/([gkhvuirzcs])s/$1uai/
-    - xform/(\w)s/$1ing/
-    - xform/([dtnlgkhvuirzcs])o/$1uo/
-    - xform/(\w)q/$1iu/
-    - xform/([jqx])y/$1iong/
-    - xform/(\w)y/$1ong/
-    - xform/(\w)m/$1en/
-    - xform/(\w)p/$1ang/
-    - xform/(\w)k/$1an/
-    - xform/(\w)j/$1ao/       # 默默檢查：雙拼碼 o 已經轉換過了
-    - xform/(\w)l/$1ai/
-    - xform/(\w)x/$1iao/
-    - xform/(\w)b/$1ie/
-    - xform/(\w)w/$1in/
-    - xform/(\w)f/$1ou/
-    - xform/([nl])c/$1ve/
-    - xform/([jqxy])c/$1ue/
-    - xform/(\w)v/$1ui/
-    - "xform/(^|[ '])v/$1zh/"  # 復原聲母，音節開始處的雙拼字母v改寫爲zh；其他位置的才真正是v
-    - "xform/(^|[ '])i/$1ch/"
-    - "xform/(^|[ '])u/$1sh/"
-    - xform/0(\w)/$1/          # 好了，現在可以把零聲母拿掉啦
-    - xform/([nl])v/$1ü/
-    - xform/([nl])ue/$1üe/
-    - xform/([jqxy])v/$1u/
+    # - xform/o(\w)/0$1/        # 零聲母先改爲0，以方便後面的轉換
+    # - xform/(\w)r/$1ei/       # 雙拼第二碼轉換爲韻母
+    # - xform/([gkhvuirzcs])g/$1ua/ # 提前轉換雙拼碼 n 和 g，因爲轉換後的拼音裏就快要出現這兩個字母了，那時將難以分辨出雙拼碼
+    # - xform/([dljqx])g/$1ia/           # 只有前面是能够相匹配聲母的時候才識別爲雙拼韻母
+    # - xform/([bpmfdtnlgkh])n/$1eng/     # 只有前面是能够相匹配聲母的時候才識別爲雙拼韻母
+    # - xform/([qtypdjlxbnm])h/$1ian/     # 保留zh, ch, sh
+    # - xform/(\w)t/$1un/
+    # - xform/([dtnljqx])d/$1uan/  # 對應多種韻母的雙拼碼，按搭配的聲母做區分（最好別用排除式如 [^o]q 容易出狀況）
+    # - xform/0d/0er/             # 另一種情況，注意先不消除0，以防後面把e當作聲母轉換爲ch
+    # - xform/([nljqx])z/$1iang/
+    # - xform/(\w)z/$1uang/       # 上一行已經把對應到 iang 的雙拼碼 t 消滅，於是這裏不用再列舉相配的聲母
+    # - xform/([gkhvuirzcs])s/$1uai/
+    # - xform/(\w)s/$1ing/
+    # - xform/([dtnlgkhvuirzcs])o/$1uo/
+    # - xform/(\w)q/$1iu/
+    # - xform/([jqx])y/$1iong/
+    # - xform/(\w)y/$1ong/
+    # - xform/(\w)m/$1en/
+    # - xform/(\w)p/$1ang/
+    # - xform/(\w)k/$1an/
+    # - xform/(\w)j/$1ao/       # 默默檢查：雙拼碼 o 已經轉換過了
+    # - xform/(\w)l/$1ai/
+    # - xform/(\w)x/$1iao/
+    # - xform/(\w)b/$1ie/
+    # - xform/(\w)w/$1in/
+    # - xform/(\w)f/$1ou/
+    # - xform/([nl])c/$1ve/
+    # - xform/([jqxy])c/$1ue/
+    # - xform/(\w)v/$1ui/
+    # - "xform/(^|[ '])v/$1zh/"  # 復原聲母，音節開始處的雙拼字母v改寫爲zh；其他位置的才真正是v
+    # - "xform/(^|[ '])i/$1ch/"
+    # - "xform/(^|[ '])u/$1sh/"
+    # - xform/0(\w)/$1/          # 好了，現在可以把零聲母拿掉啦
+    # - xform/([nl])v/$1ü/
+    # - xform/([nl])ue/$1üe/
+    # - xform/([jqxy])v/$1u/
 
 
 punctuator:
