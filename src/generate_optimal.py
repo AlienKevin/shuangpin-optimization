@@ -272,7 +272,7 @@ def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
 
 
 def reproduction(pool: list[Chromosome]) -> list[Chromosome]:
-    parents = pool[:8000]
+    parents = pool[: initial_pool_size // 2]
     for i, receiver in enumerate(parents):
         for _ in range(10):
             donor = random_choice_except_index(parents, i)
