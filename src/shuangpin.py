@@ -3,6 +3,7 @@ from enum import Enum, IntEnum
 from dataclasses import dataclass
 import random
 from itertools import product
+from typing import Optional
 from final_groups import only_jqx_final, no_jqx_group, only_gkh_group, no_gkh_group
 
 # first: 0 = left hand, 1 = right hand
@@ -185,6 +186,8 @@ class ShuangpinConfig:
     # Map variant finals to standard finals
     # REQUIRES: the standard final values must be unique
     variant_to_standard_finals: dict[str, str]
+    # Map initials to a set of finals they can be assigned to
+    initial_constraints: Optional[dict[str, set[str]]] = None
 
 
 @dataclass
@@ -225,6 +228,30 @@ default_variant_to_standard_finals: dict[str, str] = {
     "iang": "uang",
     "ia": "ua",
     "v": "ui",
+}
+
+# constraints need to be ordered by length
+# initials with the smallest number of constraints go first
+default_initial_constraints = {
+    # n + g is illegal
+    "g": {"ia", "ua", "iong", "uai", "ui", "uang"},
+    # z/c/s + h is illegal
+    "h": {
+        "ia",
+        "ua",
+        "ie",
+        "iao",
+        "iu",
+        "ian",
+        "in",
+        "iang",
+        "uang",
+        "uai",
+        "ing",
+        "ue",
+        "ve",
+        "iong",
+    },
 }
 
 fixed_variant_to_standard_finals: dict[str, str] = {
@@ -290,29 +317,82 @@ finals: list[str] = flexible_finals + fixed_finals
 
 
 def get_random_final_layout(
-    variant_to_standard_finals: dict[str, str]
-) -> dict[str, str]:
-    flexible_final_keys: set[Key] = set(qwerty_layout.keys()) - set(
-        fixed_finals_to_keys.values()
-    )
+    variant_to_standard_finals: dict[str, str],
+    initial_constraints: Optional[dict[str, set[str]]] = None,
+) -> Optional[dict[str, str]]:
+    random_layout: dict[str, str] = dict()
+    fixed_keys = set(fixed_finals_to_keys.values())
+    flexible_final_keys: set[Key] = set(qwerty_layout.keys()) - fixed_keys
     standard_to_variant_finals = {v: k for k, v in variant_to_standard_finals.items()}
-    random_layout = dict()
     standard_finals = [
         final for final in finals if final not in variant_to_standard_finals.keys()
     ]
-    for standard_final in standard_finals:
+    flexible_standard_finals = standard_finals.copy()
+    if initial_constraints is not None:
+        used_standard_finals: set[str] = set()
+        for initial, acceptable_finals in initial_constraints.items():
+            acceptable_standard_finals = set(
+                map(
+                    lambda final: variant_to_standard_finals.get(final, final),
+                    filter(
+                        lambda final: variant_to_standard_finals[final]
+                        in acceptable_finals
+                        if final in variant_to_standard_finals
+                        else (
+                            standard_to_variant_finals[final] in acceptable_finals
+                            if final in standard_to_variant_finals
+                            else True
+                        ),
+                        acceptable_finals,
+                    ),
+                )
+            )
+            # print("acceptable_standard_finals:", acceptable_standard_finals)
+            possible_standard_finals = acceptable_standard_finals - used_standard_finals
+            # The variant_to_standard_finals is incompatible with the initial_constraints
+            if len(possible_standard_finals) == 0:
+                return None
+            standard_final = random.choice(list(possible_standard_finals))
+            # assumes that the initials are not digraph initials
+            # so they map directly to the same keys
+            random_layout[standard_final] = initial
+            used_standard_finals.add(standard_final)
+            flexible_standard_finals.remove(standard_final)
+            flexible_final_keys.remove(initial)
+            # print("standard_final:", standard_final)
+            # print("initial:", initial)
+    # print(len(flexible_standard_finals))
+    # print(flexible_standard_finals)
+    # print(len(flexible_final_keys))
+    # print(flexible_final_keys)
+    # print(standard_to_variant_finals)
+    for standard_final in flexible_standard_finals:
         if standard_final in fixed_finals:
+            # print("fixed_final:", fixed_finals)
             random_layout[standard_final] = fixed_finals_to_keys[standard_final]
         elif standard_to_variant_finals.get(standard_final) in fixed_finals:
             variant_final = standard_to_variant_finals[standard_final]
+            # print("variant_final:", variant_final)
             random_layout[standard_final] = fixed_finals_to_keys[variant_final]
         else:
+            # print("standard_final:", standard_final)
             random_layout[standard_final] = random.choice(list(flexible_final_keys))
             flexible_final_keys.remove(random_layout[standard_final])
-    return random_layout
+    # Sort the layout by standard final keys so that the final layout in chromosomes are consistent
+    return dict(
+        sorted(
+            random_layout.items(),
+            key=lambda item: standard_finals.index(item[0]),
+        )
+    )
 
 
-# print(get_random_final_layout(default_variant_to_standard_finals))
+# print(
+#     get_random_final_layout(
+#         default_variant_to_standard_finals,
+#         default_initial_constraints,
+#     )
+# )
 
 
 def get_random_digraph_initial_layout() -> dict[str, str]:
@@ -388,14 +468,22 @@ def get_random_variant_to_standard_finals() -> dict[str, str]:
 # print(get_random_variant_to_standard_finals())
 
 
-def get_random_config() -> ShuangpinConfig:
+def get_random_config(
+    initial_constraints: Optional[dict[str, set[str]]] = None
+) -> ShuangpinConfig:
     variant_to_standard_finals = get_random_variant_to_standard_finals()
-    return ShuangpinConfig(
-        final_layout=get_random_final_layout(variant_to_standard_finals),
-        digraph_initial_layout=get_random_digraph_initial_layout(),
-        zero_consonant_final_layout=get_random_zero_consonant_final_layout(),
-        variant_to_standard_finals=variant_to_standard_finals,
+    final_layout = get_random_final_layout(
+        variant_to_standard_finals, initial_constraints
     )
+    if final_layout is None:
+        return get_random_config(initial_constraints)
+    else:
+        return ShuangpinConfig(
+            final_layout=final_layout,
+            digraph_initial_layout=get_random_digraph_initial_layout(),
+            zero_consonant_final_layout=get_random_zero_consonant_final_layout(),
+            variant_to_standard_finals=variant_to_standard_finals,
+        )
 
 
 def get_score(
@@ -553,7 +641,8 @@ def get_scores(
 def get_average_scores(num_of_random_scores: int) -> Scores:
     total_scores = Scores(0, 0, 0, 0, 0)
     for _ in range(num_of_random_scores):
-        total_scores += get_scores(get_random_config())
+        config = get_random_config()
+        total_scores += get_scores(config)
     return total_scores / num_of_random_scores
 
 

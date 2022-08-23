@@ -10,6 +10,7 @@ from shuangpin import (
     fixed_finals_to_keys,
     finals,
     zero_consonant_finals,
+    default_initial_constraints,
 )
 import random
 from dataclasses import dataclass
@@ -119,14 +120,20 @@ def print_chromosome(chromosome: Chromosome):
 
 def get_random_chromosome():
     variant_to_standard_finals = get_random_variant_to_standard_finals()
-    return Chromosome(
-        final_keys=list(get_random_final_layout(variant_to_standard_finals).values()),
-        digraph_initial_keys=list(get_random_digraph_initial_layout().values()),
-        zero_consonant_final_keys=list(
-            get_random_zero_consonant_final_layout().values()
-        ),
-        variant_to_standard_finals=variant_to_standard_finals,
+    final_layout = get_random_final_layout(
+        variant_to_standard_finals, default_initial_constraints
     )
+    if final_layout is None:
+        return get_random_chromosome()
+    else:
+        return Chromosome(
+            final_keys=list(final_layout.values()),
+            digraph_initial_keys=list(get_random_digraph_initial_layout().values()),
+            zero_consonant_final_keys=list(
+                get_random_zero_consonant_final_layout().values()
+            ),
+            variant_to_standard_finals=variant_to_standard_finals,
+        )
 
 
 def score_chromosome(chromosome: Chromosome) -> float:
@@ -147,7 +154,7 @@ def score_chromosome(chromosome: Chromosome) -> float:
 
 
 # must be divisible by 2
-initial_pool_size = 16000
+initial_pool_size = 8000
 
 
 # Generate 2,000 random candidate chromosomes
@@ -173,7 +180,9 @@ def get_key_by_value(dictionary: dict, value):
     return next(key for key, val in dictionary.items() if val == value)
 
 
-def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
+def crossover(
+    receiver: Chromosome, donor: Chromosome, initial_constraints: dict[str, set[str]]
+) -> Chromosome:
     # randomly replace one of receiver's variant to standard mapping
     # with the donor's mapping
     # if a fixed variant to standard mapping is chosen, the child's
@@ -221,16 +230,15 @@ def crossover(receiver: Chromosome, donor: Chromosome) -> Chromosome:
         final_section_start : final_section_start + final_section_length
     ]
     child_final_keys = receiver.final_keys.copy()
+    fixed_keys = set(fixed_finals_to_keys.values()).union(initial_constraints.keys())
     final_section_keys_ordered_iterator = iter(
         sorted(
-            (k for k in final_section_keys if k not in fixed_finals_to_keys.values()),
+            (k for k in final_section_keys if k not in fixed_keys),
             key=lambda key: donor.final_keys.index(key),
         )
     )
     final_section_keys_in_donor_order = [
-        k
-        if k in fixed_finals_to_keys.values()
-        else next(final_section_keys_ordered_iterator)
+        k if k in fixed_keys else next(final_section_keys_ordered_iterator)
         for k in final_section_keys
     ]
     child_final_keys[
@@ -276,7 +284,7 @@ def reproduction(pool: list[Chromosome]) -> list[Chromosome]:
     for i, receiver in enumerate(parents):
         for _ in range(10):
             donor = random_choice_except_index(parents, i)
-            child = crossover(receiver, donor)
+            child = crossover(receiver, donor, default_initial_constraints)
             pool.append(child)
     # print("len(pool): ", len(pool))
     return pool
