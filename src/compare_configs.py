@@ -9,6 +9,7 @@ from shuangpin_configs import (
     foxi_2,
     foxi_3,
     foxi_4,
+    foxi_5,
 )
 
 
@@ -22,6 +23,7 @@ def print_comparison():
     print("foxi 2 score = {}".format(get_score(foxi_2.config)))
     print("foxi 3 score = {}".format(get_score(foxi_3.config)))
     print("foxi 4 score = {}".format(get_score(foxi_4.config)))
+    print("foxi 5 score = {}".format(get_score(foxi_5.config)))
 
 
 print_comparison()
